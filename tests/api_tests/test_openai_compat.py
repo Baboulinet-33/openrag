@@ -41,3 +41,32 @@ class TestOpenAICompatibleAPI:
         response = api_client.post("/v1/completions", json={"model": "openrag-all", "prompt": "Test"})
         # 404 if endpoint disabled, other codes if enabled
         assert response.status_code in [200, 400, 404, 422, 500]
+
+    def test_chat_completions_exceeds_token_limit(self, api_client):
+        """When requested tokens exceed model limit, expect HTTP 413 (or 404 if disabled)."""
+        very_long_content = "test " * 20000
+        payload = {
+            "model": "", 
+            "messages": [{"role": "user", "content": very_long_content}],
+            "max_tokens": 100000,
+        }
+        response = api_client.post("/v1/chat/completions", json=payload)
+        assert response.status_code in [413, 404]
+        if response.status_code == 413:
+            body = response.json()
+            assert "exceeds maximum token limit" in body.get("detail", "").lower()
+
+    def test_completions_exceeds_token_limit(self, api_client):
+        """When requested tokens exceed model limit, expect HTTP 413 (or 404 if disabled)."""
+        very_long_prompt = "test " * 20000
+        payload = {
+            "model": "",  
+            "prompt": very_long_prompt,
+            "max_tokens": 100000,
+        }
+        response = api_client.post("/v1/completions", json=payload)
+        assert response.status_code in [413, 404]
+        if response.status_code == 413:
+            body = response.json()
+            assert "exceeds maximum token limit" in body.get("detail", "").lower()
+
