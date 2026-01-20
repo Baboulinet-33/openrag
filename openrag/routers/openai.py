@@ -8,6 +8,8 @@ from config import load_config
 from fastapi import APIRouter, Body, Depends, HTTPException, Request, status
 from fastapi.responses import JSONResponse, StreamingResponse
 from langchain_core.documents.base import Document
+from langchain_openai import ChatOpenAI
+from openai import AsyncOpenAI
 from models.openai import (
     OpenAIChatCompletionRequest,
     OpenAICompletionRequest,
@@ -110,6 +112,123 @@ def is_direct_llm_model(
     return request.model is None or request.model == "" or request.model == config.llm.get("model")
 
 
+async def get_max_model_tokens(model_id: str | None) -> int:
+    """Retrieve the maximum model token limit from vLLM's OpenAI server.
+
+    - Queries `/v1/models` and looks for `max_model_len` for the given `model_id`.
+    - Falls back to `config.llm.max_tokens` or 8192 if unavailable.
+    """
+    default_limit = int(config.llm_context.get("max_llm_context_size", 8192))
+    try:
+        client = AsyncOpenAI(base_url=config.llm["base_url"], api_key=config.llm["api_key"])
+        resp = await client.models.list()
+        
+        for m in getattr(resp, "data", []) or []:
+            mid = getattr(m, "id", None)
+            try:
+                md = m.model_dump()
+            except Exception:                
+                md = None
+
+            if not mid and md and isinstance(md, dict):
+                mid = md.get("id")
+
+            if model_id and mid != model_id:
+                continue
+
+            max_len = getattr(m, "max_model_len", None)
+            if max_len is None and hasattr(m, "model_extra"):
+                extra = getattr(m, "model_extra", {}) or {}
+                max_len = extra.get("max_model_len")
+            if max_len is None and md and isinstance(md, dict):
+                max_len = md.get("max_model_len")
+
+            if isinstance(max_len, (int, float)) and max_len > 0:
+                logger.debug("Fetched max_model_len from vLLM", model=mid, max_model_len=int(max_len))
+                return int(max_len)
+
+        logger.debug("max_model_len not found in /v1/models response, using default", default=default_limit)
+        return default_limit
+    except Exception as e:
+        logger.warning("Failed to query /v1/models for max_model_len; using default", error=str(e))
+        return default_limit
+
+
+def validate_tokens_limit(
+    request: OpenAIChatCompletionRequest | OpenAICompletionRequest,
+    max_tokens_allowed: int | None = None,
+) -> tuple[bool, str]:
+    """Validate if the request respects the maximum token limit.
+    
+    Args:
+        request: The OpenAI request object
+        max_tokens_allowed: Maximum allowed tokens for the request.
+                          If None, retrieves from config.
+        
+    Returns:
+        Tuple of (is_valid, error_message)
+    """
+    try:
+        llm = ChatOpenAI(**config.llm)
+        _length_function = llm.get_num_tokens
+        
+        if max_tokens_allowed is None:
+            max_tokens_allowed = config.llm.get("max_tokens", 4096)
+        
+        if isinstance(request, OpenAIChatCompletionRequest):
+            message_tokens = sum(
+                _length_function(m.content) + 4  
+                for m in request.messages
+            )
+            requested_tokens = request.max_tokens or 1024
+            total_tokens_needed = message_tokens + requested_tokens
+            
+            logger.debug(
+                "Token validation for chat completion",
+                message_tokens=message_tokens,
+                requested_tokens=requested_tokens,
+                total_tokens=total_tokens_needed,
+                max_allowed=max_tokens_allowed,
+            )
+            
+            if total_tokens_needed > max_tokens_allowed:
+                return False, (
+                    f"Request exceeds maximum token limit. "
+                    f"Messages: {message_tokens} tokens + "
+                    f"Requested output: {requested_tokens} tokens = "
+                    f"{total_tokens_needed} tokens. "
+                    f"Maximum allowed: {max_tokens_allowed} tokens."
+                )
+            
+        elif isinstance(request, OpenAICompletionRequest):
+            prompt_tokens = _length_function(request.prompt)
+            requested_tokens = request.max_tokens or 512
+            total_tokens_needed = prompt_tokens + requested_tokens
+            
+            logger.debug(
+                "Token validation for completion",
+                prompt_tokens=prompt_tokens,
+                requested_tokens=requested_tokens,
+                total_tokens=total_tokens_needed,
+                max_allowed=max_tokens_allowed,
+            )
+            
+            if total_tokens_needed > max_tokens_allowed:
+                return False, (
+                    f"Request exceeds maximum token limit. "
+                    f"Prompt: {prompt_tokens} tokens + "
+                    f"Requested output: {requested_tokens} tokens = "
+                    f"{total_tokens_needed} tokens. "
+                    f"Maximum allowed: {max_tokens_allowed} tokens."
+                )
+        
+        return True, ""
+        
+    except Exception as e:
+        logger.warning("Error during token validation", error=str(e))
+        return True, ""
+
+
 @router.post(
     "/chat/completions",
     summary="OpenAI compatible chat completion endpoint using RAG",
@@ -156,6 +275,16 @@ async def openai_chat_completion(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="The last message must be a non-empty user message",
+        )
+
+    target_model_id = model_name if is_direct_llm_model(request) else config.llm.get("model")
+    max_tokens_allowed = await get_max_model_tokens(target_model_id)
+    is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
+    if not is_valid:
+        log.warning("Token limit validation failed", detail=error_message)
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=error_message,
         )
 
     log.debug(
@@ -283,6 +412,16 @@ async def openai_completion(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Streaming is not supported for this endpoint",
+        )
+
+    target_model_id = model_name if is_direct_llm_model(request) else config.llm.get("model")
+    max_tokens_allowed = await get_max_model_tokens(target_model_id)
+    is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
+    if not is_valid:
+        log.warning("Token limit validation failed", detail=error_message)
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=error_message,
         )
 
     try:

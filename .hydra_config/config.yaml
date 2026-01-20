@@ -72,6 +72,9 @@ verbose:
 server:
   preferred_url_scheme: ${oc.env:PREFERRED_URL_SCHEME, null}
 
+llm_context:
+  max_llm_context_size: ${oc.decode:${oc.env:max_llm_context_size, 8192}}
+
 paths:
   prompts_dir: ${oc.env:PROMPTS_DIR, ../prompts/example1}
   data_dir: ${oc.env:DATA_DIR, ../data}
