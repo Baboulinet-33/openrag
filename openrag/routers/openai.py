@@ -9,11 +9,8 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Request, status
 from fastapi.responses import JSONResponse, StreamingResponse
 from langchain_core.documents.base import Document
 from langchain_openai import ChatOpenAI
+from models.openai import OpenAIChatCompletionRequest, OpenAICompletionRequest
 from openai import AsyncOpenAI
-from models.openai import (
-    OpenAIChatCompletionRequest,
-    OpenAICompletionRequest,
-)
 from utils.dependencies import get_vectordb
 from utils.logger import get_logger
 
@@ -122,12 +119,12 @@ async def get_max_model_tokens(model_id: str | None) -> int:
     try:
         client = AsyncOpenAI(base_url=config.llm["base_url"], api_key=config.llm["api_key"])
         resp = await client.models.list()
-        
+
         for m in getattr(resp, "data", []) or []:
             mid = getattr(m, "id", None)
             try:
                 md = m.model_dump()
-            except Exception:                
+            except Exception:
                 md = None
 
             if not mid and md and isinstance(md, dict):
@@ -159,30 +156,27 @@ def validate_tokens_limit(
     max_tokens_allowed: int | None = None,
 ) -> tuple[bool, str]:
     """Validate if the request respects the maximum token limit.
-    
+
     Args:
         request: The OpenAI request object
         max_tokens_allowed: Maximum allowed tokens for the request.
                           If None, retrieves from config.
-        
+
     Returns:
         Tuple of (is_valid, error_message)
     """
     try:
         llm = ChatOpenAI(**config.llm)
         _length_function = llm.get_num_tokens
-        
+
         if max_tokens_allowed is None:
             max_tokens_allowed = config.llm.get("max_tokens", 4096)
-        
+
         if isinstance(request, OpenAIChatCompletionRequest):
-            message_tokens = sum(
-                _length_function(m.content) + 4  
-                for m in request.messages
-            )
+            message_tokens = sum(_length_function(m.content) + 4 for m in request.messages)
             requested_tokens = request.max_tokens or 1024
             total_tokens_needed = message_tokens + requested_tokens
-            
+
             logger.debug(
                 "Token validation for chat completion",
                 message_tokens=message_tokens,
@@ -190,7 +184,7 @@ def validate_tokens_limit(
                 total_tokens=total_tokens_needed,
                 max_allowed=max_tokens_allowed,
             )
-            
+
             if total_tokens_needed > max_tokens_allowed:
                 return False, (
                     f"Request exceeds maximum token limit. "
@@ -199,12 +193,12 @@ def validate_tokens_limit(
                     f"{total_tokens_needed} tokens. "
                     f"Maximum allowed: {max_tokens_allowed} tokens."
                 )
-            
+
         elif isinstance(request, OpenAICompletionRequest):
             prompt_tokens = _length_function(request.prompt)
             requested_tokens = request.max_tokens or 512
             total_tokens_needed = prompt_tokens + requested_tokens
-            
+
             logger.debug(
                 "Token validation for completion",
                 prompt_tokens=prompt_tokens,
@@ -212,7 +206,7 @@ def validate_tokens_limit(
                 total_tokens=total_tokens_needed,
                 max_allowed=max_tokens_allowed,
             )
-            
+
             if total_tokens_needed > max_tokens_allowed:
                 return False, (
                     f"Request exceeds maximum token limit. "
@@ -221,9 +215,9 @@ def validate_tokens_limit(
                     f"{total_tokens_needed} tokens. "
                     f"Maximum allowed: {max_tokens_allowed} tokens."
                 )
-        
+
         return True, ""
-        
+
     except Exception as e:
         logger.warning("Error during token validation", error=str(e))
         return True, ""

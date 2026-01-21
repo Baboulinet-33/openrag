@@ -46,7 +46,7 @@ class TestOpenAICompatibleAPI:
         """When requested tokens exceed model limit, expect HTTP 413 (or 404 if disabled)."""
         very_long_content = "test " * 20000
         payload = {
-            "model": "", 
+            "model": "",
             "messages": [{"role": "user", "content": very_long_content}],
             "max_tokens": 100000,
         }
@@ -60,7 +60,7 @@ class TestOpenAICompatibleAPI:
         """When requested tokens exceed model limit, expect HTTP 413 (or 404 if disabled)."""
         very_long_prompt = "test " * 20000
         payload = {
-            "model": "",  
+            "model": "",
             "prompt": very_long_prompt,
             "max_tokens": 100000,
         }
@@ -69,4 +69,3 @@ class TestOpenAICompatibleAPI:
         if response.status_code == 413:
             body = response.json()
             assert "exceeds maximum token limit" in body.get("detail", "").lower()
-
