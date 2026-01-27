@@ -4,13 +4,12 @@ from urllib.parse import quote
 
 import consts
 from components.pipeline import RagPipeline
+from components.utils import get_num_tokens
 from config import load_config
 from fastapi import APIRouter, Body, Depends, HTTPException, Request, status
 from fastapi.responses import JSONResponse, StreamingResponse
 from langchain_core.documents.base import Document
-from langchain_openai import ChatOpenAI
 from models.openai import OpenAIChatCompletionRequest, OpenAICompletionRequest
-from openai import AsyncOpenAI
 from utils.dependencies import get_vectordb
 from utils.logger import get_logger
 
@@ -19,6 +18,7 @@ from .utils import (
     current_user,
     current_user_or_admin_partitions,
     current_user_or_admin_partitions_list,
+    get_openai_models,
     get_partition_name,
     truncate,
 )
@@ -116,36 +116,23 @@ async def get_max_model_tokens(model_id: str | None) -> int:
     - Falls back to `config.llm.max_tokens` or 8192 if unavailable.
     """
     default_limit = int(config.llm_context.get("max_llm_context_size", 8192))
+    openai_models = await get_openai_models(base_url=config.llm["base_url"], api_key=config.llm["api_key"])
     try:
-        client = AsyncOpenAI(base_url=config.llm["base_url"], api_key=config.llm["api_key"])
-        resp = await client.models.list()
+        model = next((current_model for current_model in openai_models if current_model.id == model_id), None)
+        if model is None:
+            logger.warning(f"No model found for {model_id}. Use default context size.")
+            return default_limit
 
-        for m in getattr(resp, "data", []) or []:
-            mid = getattr(m, "id", None)
-            try:
-                md = m.model_dump()
-            except Exception:
-                md = None
+        model = model.model_dump() if hasattr(model, "model_dump") else model.dict()
+        max_len = model.get("max_model_len") or model.get("model_extra", {}).get("max_model_len")
 
-            if not mid and md and isinstance(md, dict):
-                mid = md.get("id")
+        if max_len is None:
+            logger.warning(f"max_model_len not found for {model_id}. Use default context size.")
+            return default_limit
 
-            if model_id and mid != model_id:
-                continue
+        logger.debug("Fetched max_model_len from vLLM", model=model_id, max_model_len=int(max_len))
+        return int(max_len)
 
-            max_len = getattr(m, "max_model_len", None)
-            if max_len is None and hasattr(m, "model_extra"):
-                extra = getattr(m, "model_extra", {}) or {}
-                max_len = extra.get("max_model_len")
-            if max_len is None and md and isinstance(md, dict):
-                max_len = md.get("max_model_len")
-
-            if isinstance(max_len, (int, float)) and max_len > 0:
-                logger.debug("Fetched max_model_len from vLLM", model=mid, max_model_len=int(max_len))
-                return int(max_len)
-
-        logger.debug("max_model_len not found in /v1/models response, using default", default=default_limit)
-        return default_limit
     except Exception as e:
         logger.warning("Failed to query /v1/models for max_model_len; using default", error=str(e))
         return default_limit
@@ -166,14 +153,13 @@ def validate_tokens_limit(
         Tuple of (is_valid, error_message)
     """
     try:
-        llm = ChatOpenAI(**config.llm)
-        _length_function = llm.get_num_tokens
+        _length_function = get_num_tokens()
 
         if max_tokens_allowed is None:
-            max_tokens_allowed = config.llm.get("max_tokens", 4096)
+            max_tokens_allowed = int(config.llm_context.get("max_llm_context_size", 4096))
 
         if isinstance(request, OpenAIChatCompletionRequest):
-            message_tokens = sum(_length_function(m.content) + 4 for m in request.messages)
+            message_tokens = sum(_length_function(m.content or "") + 4 for m in request.messages)
             requested_tokens = request.max_tokens or 1024
             total_tokens_needed = message_tokens + requested_tokens
 
@@ -275,7 +261,7 @@ async def openai_chat_completion(
     max_tokens_allowed = await get_max_model_tokens(target_model_id)
     is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
     if not is_valid:
-        log.warning("Token limit validation failed", detail=error_message)
+        log.info("Request exceeds token limit", detail=error_message)
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail=error_message,
@@ -412,7 +398,7 @@ async def openai_completion(
     max_tokens_allowed = await get_max_model_tokens(target_model_id)
     is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
     if not is_valid:
-        log.warning("Token limit validation failed", detail=error_message)
+        log.info("Request exceeds token limit", detail=error_message)
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail=error_message,
