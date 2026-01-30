@@ -157,23 +157,19 @@ def get_max_model_tokens() -> int:
 
 def validate_tokens_limit(
     request: OpenAIChatCompletionRequest | OpenAICompletionRequest,
-    max_tokens_allowed: int | None = None,
+    max_tokens_allowed: int,
 ) -> tuple[bool, str]:
     """Validate if the request respects the maximum token limit.
 
     Args:
         request: The OpenAI request object
         max_tokens_allowed: Maximum allowed tokens for the request.
-                          If None, retrieves from config.
 
     Returns:
         Tuple of (is_valid, error_message)
     """
     try:
         _length_function = get_num_tokens()
-
-        if max_tokens_allowed is None:
-            max_tokens_allowed = int(config.llm_context.get("max_llm_context_size", 4096))
 
         if isinstance(request, OpenAIChatCompletionRequest):
             message_tokens = sum(_length_function(m.content or "") + 4 for m in request.messages)
