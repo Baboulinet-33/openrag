@@ -77,10 +77,15 @@ class DistributedSemaphore:
         await semaphore_actor.release.remote()
 
 
+_cached_length_function = None
+
+
 def get_num_tokens():
-    llm = ChatOpenAI(**config.llm)
-    _length_function = llm.get_num_tokens
-    return _length_function
+    global _cached_length_function
+    if _cached_length_function is None:
+        llm = ChatOpenAI(**config.llm)
+        _cached_length_function = llm.get_num_tokens
+    return _cached_length_function
 
 
 def format_context(docs: list[Document], max_context_tokens: int = 4096) -> str:
