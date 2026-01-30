@@ -29,6 +29,15 @@ router = APIRouter()
 
 ragpipe = RagPipeline(config=config)
 
+# Cached max model token limit, populated at startup
+_max_model_tokens: int | None = None
+
+
+@router.on_event("startup")
+async def _cache_max_model_tokens():
+    global _max_model_tokens
+    _max_model_tokens = await _fetch_max_model_tokens()
+
 
 @router.get(
     "/models",
@@ -109,33 +118,41 @@ def is_direct_llm_model(
     return request.model is None or request.model == "" or request.model == config.llm.get("model")
 
 
-async def get_max_model_tokens(model_id: str | None) -> int:
-    """Retrieve the maximum model token limit from vLLM's OpenAI server.
+async def _fetch_max_model_tokens() -> int:
+    """Fetch the maximum model token limit from vLLM's OpenAI server.
 
-    - Queries `/v1/models` and looks for `max_model_len` for the given `model_id`.
-    - Falls back to `config.llm.max_tokens` or 8192 if unavailable.
+    Queries `/v1/models` and looks for `max_model_len` for the configured LLM model.
+    Falls back to `config.llm_context.max_llm_context_size` (default 8192) if unavailable.
     """
     default_limit = int(config.llm_context.get("max_llm_context_size", 8192))
-    openai_models = await get_openai_models(base_url=config.llm["base_url"], api_key=config.llm["api_key"])
+    model_id = config.llm.get("model")
     try:
-        model = next((current_model for current_model in openai_models if current_model.id == model_id), None)
+        openai_models = await get_openai_models(base_url=config.llm["base_url"], api_key=config.llm["api_key"])
+        model = next((m for m in openai_models if m.id == model_id), None)
         if model is None:
-            logger.warning(f"No model found for {model_id}. Use default context size.")
+            logger.warning(f"No model found for {model_id}. Using default context size.")
             return default_limit
 
-        model = model.model_dump() if hasattr(model, "model_dump") else model.dict()
-        max_len = model.get("max_model_len") or model.get("model_extra", {}).get("max_model_len")
+        model_data = model.model_dump() if hasattr(model, "model_dump") else model.dict()
+        max_len = model_data.get("max_model_len") or model_data.get("model_extra", {}).get("max_model_len")
 
         if max_len is None:
-            logger.warning(f"max_model_len not found for {model_id}. Use default context size.")
+            logger.warning(f"max_model_len not found for {model_id}. Using default context size.")
             return default_limit
 
-        logger.debug("Fetched max_model_len from vLLM", model=model_id, max_model_len=int(max_len))
+        logger.info("Fetched max_model_len from vLLM at startup", model=model_id, max_model_len=int(max_len))
         return int(max_len)
 
     except Exception as e:
         logger.warning("Failed to query /v1/models for max_model_len; using default", error=str(e))
         return default_limit
+
+
+def get_max_model_tokens() -> int:
+    """Return the cached max model token limit (populated at startup)."""
+    if _max_model_tokens is not None:
+        return _max_model_tokens
+    return int(config.llm_context.get("max_llm_context_size", 8192))
 
 
 def validate_tokens_limit(
@@ -257,8 +274,7 @@ async def openai_chat_completion(
             detail="The last message must be a non-empty user message",
         )
 
-    target_model_id = model_name if is_direct_llm_model(request) else config.llm.get("model")
-    max_tokens_allowed = await get_max_model_tokens(target_model_id)
+    max_tokens_allowed = get_max_model_tokens()
     is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
     if not is_valid:
         log.info("Request exceeds token limit", detail=error_message)
@@ -394,8 +410,7 @@ async def openai_completion(
             detail="Streaming is not supported for this endpoint",
         )
 
-    target_model_id = model_name if is_direct_llm_model(request) else config.llm.get("model")
-    max_tokens_allowed = await get_max_model_tokens(target_model_id)
+    max_tokens_allowed = get_max_model_tokens()
     is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
     if not is_valid:
         log.info("Request exceeds token limit", detail=error_message)

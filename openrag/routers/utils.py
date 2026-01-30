@@ -239,7 +239,7 @@ def get_app_state(request: Request):
 async def get_openai_models(base_url: str, api_key: str):
     async with AsyncOpenAI(base_url=base_url, api_key=api_key) as client:
         models_response = await client.models.list()
-        return models_response
+        return models_response.data
 
 
 async def check_llm_model_availability(request: Request):
@@ -247,7 +247,7 @@ async def check_llm_model_availability(request: Request):
     for model_type, param in models.items():
         try:
             openai_models = await get_openai_models(base_url=param["base_url"], api_key=param["api_key"])
-            available_models = {m.id for m in openai_models.data}
+            available_models = {m.id for m in openai_models}
             if param["model"] not in available_models:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
