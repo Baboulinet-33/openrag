@@ -1,5 +1,7 @@
 """OpenAI-compatible API tests."""
 
+import pytest
+
 
 class TestOpenAICompatibleAPI:
     """Test OpenAI-compatible endpoints.
@@ -42,30 +44,31 @@ class TestOpenAICompatibleAPI:
         # 404 if endpoint disabled, other codes if enabled
         assert response.status_code in [200, 400, 404, 422, 500]
 
-    def test_chat_completions_exceeds_token_limit(self, api_client):
-        """When requested tokens exceed model limit, expect HTTP 413 (or 404 if disabled)."""
-        very_long_content = "test " * 20000
-        payload = {
-            "model": "",
-            "messages": [{"role": "user", "content": very_long_content}],
-            "max_tokens": 100000,
-        }
-        response = api_client.post("/v1/chat/completions", json=payload)
-        assert response.status_code in [413, 404]
-        if response.status_code == 413:
-            body = response.json()
-            assert "exceeds maximum token limit" in body.get("detail", "").lower()
-
-    def test_completions_exceeds_token_limit(self, api_client):
-        """When requested tokens exceed model limit, expect HTTP 413 (or 404 if disabled)."""
-        very_long_prompt = "test " * 20000
-        payload = {
-            "model": "",
-            "prompt": very_long_prompt,
-            "max_tokens": 100000,
-        }
-        response = api_client.post("/v1/completions", json=payload)
-        assert response.status_code in [413, 404]
-        if response.status_code == 413:
-            body = response.json()
-            assert "exceeds maximum token limit" in body.get("detail", "").lower()
+    @pytest.mark.parametrize(
+        "endpoint, payload",
+        [
+            (
+                "/v1/chat/completions",
+                {
+                    "model": "",
+                    "messages": [{"role": "user", "content": "test " * 20000}],
+                    "max_tokens": 100000,
+                },
+            ),
+            (
+                "/v1/completions",
+                {
+                    "model": "",
+                    "prompt": "test " * 20000,
+                    "max_tokens": 100000,
+                },
+            ),
+        ],
+        ids=["chat_completions", "completions"],
+    )
+    def test_exceeds_token_limit(self, api_client, endpoint, payload):
+        """When requested tokens exceed model limit, expect HTTP 413."""
+        response = api_client.post(endpoint, json=payload)
+        assert response.status_code == 413
+        body = response.json()
+        assert "exceeds maximum token limit" in body["detail"].lower()
