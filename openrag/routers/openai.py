@@ -218,8 +218,23 @@ def validate_tokens_limit(
         return True, ""
 
     except Exception as e:
-        logger.warning("Error during token validation", error=str(e))
+        logger.warning("Error during token validation, skipping check", error=str(e))
         return True, ""
+
+
+def check_tokens_limit(
+    request: OpenAIChatCompletionRequest | OpenAICompletionRequest,
+    log,
+):
+    """Validate token limit and raise HTTPException(413) if exceeded."""
+    max_tokens_allowed = get_max_model_tokens()
+    is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
+    if not is_valid:
+        log.info("Request exceeds token limit", detail=error_message)
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=error_message,
+        )
 
 
 @router.post(
@@ -270,14 +285,7 @@ async def openai_chat_completion(
             detail="The last message must be a non-empty user message",
         )
 
-    max_tokens_allowed = get_max_model_tokens()
-    is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
-    if not is_valid:
-        log.info("Request exceeds token limit", detail=error_message)
-        raise HTTPException(
-            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-            detail=error_message,
-        )
+    check_tokens_limit(request, log)
 
     log.debug(
         "Received chat completion request with messages: {}",
@@ -406,14 +414,7 @@ async def openai_completion(
             detail="Streaming is not supported for this endpoint",
         )
 
-    max_tokens_allowed = get_max_model_tokens()
-    is_valid, error_message = validate_tokens_limit(request, max_tokens_allowed=max_tokens_allowed)
-    if not is_valid:
-        log.info("Request exceeds token limit", detail=error_message)
-        raise HTTPException(
-            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-            detail=error_message,
-        )
+    check_tokens_limit(request, log)
 
     try:
         if is_direct_llm_model(request):
