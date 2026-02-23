@@ -606,6 +606,62 @@ class PartitionFileManager:
         """Return a SHA-256 hash of a token string."""
         return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
+    def get_or_create_user_by_external_id(self, external_user_id: str, display_name: str | None = None) -> dict:
+        """Look up a user by external_user_id, or create one with a personal partition.
+
+        Used for OIDC JIT provisioning. On first login, creates:
+        - A User with token=NULL (OIDC users authenticate via JWT)
+        - A partition named after the external_user_id
+        - An owner membership linking the user to the partition
+        """
+        with self.Session() as s:
+            user = s.query(User).filter(User.external_user_id == external_user_id).first()
+            if user:
+                return {
+                    "id": user.id,
+                    "display_name": user.display_name,
+                    "external_user_id": user.external_user_id,
+                    "is_admin": user.is_admin,
+                    "file_quota": user.file_quota,
+                    "file_count": user.file_count,
+                    "token": None,
+                }
+
+            # Create user (no token — OIDC users don't need one)
+            user = User(
+                external_user_id=external_user_id,
+                display_name=display_name,
+                token=None,
+                is_admin=False,
+            )
+            s.add(user)
+            s.flush()  # Get the user.id before creating partition
+
+            # Create partition if it doesn't exist
+            if not s.query(Partition).filter(Partition.partition == external_user_id).first():
+                s.add(Partition(partition=external_user_id))
+
+            # Add owner membership
+            s.add(PartitionMembership(partition_name=external_user_id, user_id=user.id, role="owner"))
+            s.commit()
+            s.refresh(user)
+
+            self.logger.info(
+                "JIT-provisioned OIDC user",
+                user_id=user.id,
+                external_user_id=external_user_id,
+                partition=external_user_id,
+            )
+            return {
+                "id": user.id,
+                "display_name": user.display_name,
+                "external_user_id": user.external_user_id,
+                "is_admin": user.is_admin,
+                "file_quota": user.file_quota,
+                "file_count": user.file_count,
+                "token": None,
+            }
+
     # Document relationship methods
 
     def get_files_by_relationship(self, partition: str, relationship_id: str) -> list[dict]:

@@ -909,6 +909,9 @@ class MilvusDB(BaseVectorDB):
         self._check_user_exists(user_id)
         return self.partition_file_manager.regenerate_user_token(user_id)
 
+    async def get_or_create_user_by_external_id(self, external_user_id: str, display_name: str | None = None):
+        return self.partition_file_manager.get_or_create_user_by_external_id(external_user_id, display_name)
+
     def update_user_quota(self, user_id: int, file_quota: int | None):
         self._check_user_exists(user_id)
         return self.partition_file_manager.update_user_quota(user_id, file_quota)
