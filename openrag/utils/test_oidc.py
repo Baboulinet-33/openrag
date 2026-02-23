@@ -1,9 +1,34 @@
+import json
+import time
 from unittest.mock import MagicMock, patch
 
 import httpx
+import jwt
 import pytest
+from cryptography.hazmat.primitives.asymmetric import rsa
+from jwt.algorithms import RSAAlgorithm
 
 from utils.oidc import OIDCValidator
+
+
+def _generate_rsa_keypair():
+    """Generate an RSA key pair for test JWT signing."""
+    return rsa.generate_private_key(public_exponent=65537, key_size=2048)
+
+
+def _make_jwks_from_private_key(private_key, kid="test-key-1"):
+    """Build a JWKS dict from a private key."""
+    pub_key = private_key.public_key()
+    jwk_dict = json.loads(RSAAlgorithm.to_jwk(pub_key))
+    jwk_dict["kid"] = kid
+    jwk_dict["use"] = "sig"
+    jwk_dict["alg"] = "RS256"
+    return {"keys": [jwk_dict]}
+
+
+def _sign_jwt(claims: dict, private_key, kid="test-key-1"):
+    """Sign a JWT with RS256."""
+    return jwt.encode(claims, private_key, algorithm="RS256", headers={"kid": kid})
 
 FAKE_ISSUER = "https://cozy.example.com"
 FAKE_DISCOVERY = {
@@ -74,3 +99,83 @@ class TestOIDCValidatorInit:
 
             validator = OIDCValidator.create_from_issuer(FAKE_ISSUER)
             assert validator is None
+
+
+class TestValidateToken:
+    @pytest.fixture(autouse=True)
+    def setup_validator(self):
+        self.private_key = _generate_rsa_keypair()
+        jwks = _make_jwks_from_private_key(self.private_key)
+        self.validator = OIDCValidator(
+            issuer=FAKE_ISSUER,
+            jwks_uri=f"{FAKE_ISSUER}/.well-known/jwks.json",
+            jwks=jwks,
+        )
+
+    def test_valid_token(self):
+        claims = {"sub": "user123", "iss": FAKE_ISSUER, "exp": time.time() + 300}
+        token = _sign_jwt(claims, self.private_key)
+        result = self.validator.validate_token(token)
+        assert result["sub"] == "user123"
+        assert result["iss"] == FAKE_ISSUER
+
+    def test_expired_token(self):
+        claims = {"sub": "user123", "iss": FAKE_ISSUER, "exp": time.time() - 300}
+        token = _sign_jwt(claims, self.private_key)
+        with pytest.raises(jwt.ExpiredSignatureError):
+            self.validator.validate_token(token)
+
+    def test_wrong_issuer(self):
+        claims = {"sub": "user123", "iss": "https://wrong.example.com", "exp": time.time() + 300}
+        token = _sign_jwt(claims, self.private_key)
+        with pytest.raises(jwt.InvalidIssuerError):
+            self.validator.validate_token(token)
+
+    def test_wrong_signature(self):
+        other_key = _generate_rsa_keypair()
+        claims = {"sub": "user123", "iss": FAKE_ISSUER, "exp": time.time() + 300}
+        token = _sign_jwt(claims, other_key)
+        with pytest.raises(jwt.InvalidSignatureError):
+            self.validator.validate_token(token)
+
+    def test_unknown_kid_triggers_jwks_refresh(self):
+        """When kid is not in cached JWKS, refresh JWKS and retry."""
+        new_key = _generate_rsa_keypair()
+        new_jwks = _make_jwks_from_private_key(new_key, kid="rotated-key")
+        claims = {"sub": "user123", "iss": FAKE_ISSUER, "exp": time.time() + 300}
+        token = _sign_jwt(claims, new_key, kid="rotated-key")
+
+        with patch.object(self.validator, "_refresh_jwks") as mock_refresh:
+
+            def do_refresh():
+                self.validator.jwks = new_jwks
+
+            mock_refresh.side_effect = do_refresh
+            result = self.validator.validate_token(token)
+            assert result["sub"] == "user123"
+            mock_refresh.assert_called_once()
+
+    def test_missing_sub_claim(self):
+        """Token without sub claim should be rejected."""
+        claims = {"iss": FAKE_ISSUER, "exp": time.time() + 300}
+        token = _sign_jwt(claims, self.private_key)
+        with pytest.raises(jwt.MissingRequiredClaimError):
+            self.validator.validate_token(token)
+
+    def test_token_without_kid_header(self):
+        """Token with no kid header should be rejected immediately."""
+        claims = {"sub": "user123", "iss": FAKE_ISSUER, "exp": time.time() + 300}
+        token = jwt.encode(claims, self.private_key, algorithm="RS256")
+        with pytest.raises(jwt.InvalidTokenError, match="no 'kid' header"):
+            self.validator.validate_token(token)
+
+    def test_non_rsa_key_rejected(self):
+        """JWKS key with wrong kty should be rejected."""
+        # Replace the cached JWKS with a key that has wrong kty
+        self.validator.jwks = {
+            "keys": [{"kid": "test-key-1", "kty": "EC", "n": "fake", "e": "AQAB"}]
+        }
+        claims = {"sub": "user123", "iss": FAKE_ISSUER, "exp": time.time() + 300}
+        token = _sign_jwt(claims, self.private_key)
+        with pytest.raises(jwt.InvalidTokenError, match="not an RSA key"):
+            self.validator.validate_token(token)
