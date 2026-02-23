@@ -1,7 +1,4 @@
 import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
 from components.indexer.vectordb.utils import (
     Base,
     Partition,
@@ -9,6 +6,8 @@ from components.indexer.vectordb.utils import (
     PartitionMembership,
     User,
 )
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 @pytest.fixture
@@ -40,9 +39,9 @@ class TestGetOrCreateUserByExternalId:
             partition = s.query(Partition).filter_by(partition="oidc-sub-123").first()
             assert partition is not None
 
-            membership = s.query(PartitionMembership).filter_by(
-                partition_name="oidc-sub-123", user_id=result["id"]
-            ).first()
+            membership = (
+                s.query(PartitionMembership).filter_by(partition_name="oidc-sub-123", user_id=result["id"]).first()
+            )
             assert membership is not None
             assert membership.role == "owner"
 
@@ -65,9 +64,9 @@ class TestGetOrCreateUserByExternalId:
 
         assert result["external_user_id"] == "oidc-sub-456"
         with pfm.Session() as s:
-            membership = s.query(PartitionMembership).filter_by(
-                partition_name="oidc-sub-456", user_id=result["id"]
-            ).first()
+            membership = (
+                s.query(PartitionMembership).filter_by(partition_name="oidc-sub-456", user_id=result["id"]).first()
+            )
             assert membership is not None
             assert membership.role == "owner"
 

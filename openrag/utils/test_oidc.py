@@ -7,7 +7,6 @@ import jwt
 import pytest
 from cryptography.hazmat.primitives.asymmetric import rsa
 from jwt.algorithms import RSAAlgorithm
-
 from utils.oidc import OIDCValidator
 
 
@@ -29,6 +28,7 @@ def _make_jwks_from_private_key(private_key, kid="test-key-1"):
 def _sign_jwt(claims: dict, private_key, kid="test-key-1"):
     """Sign a JWT with RS256."""
     return jwt.encode(claims, private_key, algorithm="RS256", headers={"kid": kid})
+
 
 FAKE_ISSUER = "https://cozy.example.com"
 FAKE_DISCOVERY = {
@@ -172,9 +172,7 @@ class TestValidateToken:
     def test_non_rsa_key_rejected(self):
         """JWKS key with wrong kty should be rejected."""
         # Replace the cached JWKS with a key that has wrong kty
-        self.validator.jwks = {
-            "keys": [{"kid": "test-key-1", "kty": "EC", "n": "fake", "e": "AQAB"}]
-        }
+        self.validator.jwks = {"keys": [{"kid": "test-key-1", "kty": "EC", "n": "fake", "e": "AQAB"}]}
         claims = {"sub": "user123", "iss": FAKE_ISSUER, "exp": time.time() + 300}
         token = _sign_jwt(claims, self.private_key)
         with pytest.raises(jwt.InvalidTokenError, match="not an RSA key"):

@@ -9,13 +9,11 @@ Tests verify that:
 
 import json
 import time
-from unittest.mock import patch
 
 import jwt as pyjwt
 import pytest
 from cryptography.hazmat.primitives.asymmetric import rsa
 from jwt.algorithms import RSAAlgorithm
-
 from utils.oidc import OIDCValidator
 
 FAKE_ISSUER = "https://cozy.example.com"
