@@ -74,6 +74,7 @@ class AppState:
 
 # Read the token from env (or None if not set)
 AUTH_TOKEN: str | None = os.getenv("AUTH_TOKEN")
+OIDC_ISSUER_URL: str | None = os.getenv("OIDC_ISSUER_URL")
 INDEXERUI_PORT: str | None = os.getenv("INDEXERUI_PORT", "3042")
 INDEXERUI_URL: str | None = os.getenv("INDEXERUI_URL", f"http://localhost:{INDEXERUI_PORT}")
 WITH_CHAINLIT_UI: bool = os.getenv("WITH_CHAINLIT_UI", "true").lower() == "true"
@@ -130,6 +131,10 @@ class TokenRedactingMiddleware(BaseHTTPMiddleware):
 
 
 class AuthMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app, oidc_validator=None):
+        super().__init__(app)
+        self.oidc_validator = oidc_validator
+
     async def dispatch(self, request: Request, call_next):
         vectordb = get_vectordb()
         # Skip if no AUTH_TOKEN configured
@@ -168,7 +173,25 @@ class AuthMiddleware(BaseHTTPMiddleware):
         if not token:
             return JSONResponse(status_code=403, content={"detail": "Missing token"})
 
-        # Lookup user in DB
+        # OIDC JWT path
+        if self.oidc_validator and self.oidc_validator.is_jwt(token):
+            try:
+                claims = self.oidc_validator.validate_token(token)
+                sub = claims["sub"]
+                display_name = claims.get("name") or claims.get("preferred_username") or sub
+
+                # Look up or JIT-create user
+                user = await vectordb.get_or_create_user_by_external_id.remote(sub, display_name)
+                user_partitions = await vectordb.list_user_partitions.remote(user["id"])
+
+                request.state.user = user
+                request.state.user_partitions = user_partitions
+                return await call_next(request)
+            except Exception as e:
+                logger.warning("OIDC token validation failed", error=str(e))
+                return JSONResponse(status_code=401, content={"detail": "Invalid or expired token"})
+
+        # Existing opaque token path
         user = await vectordb.get_user_by_token.remote(token)
         if not user:
             return JSONResponse(status_code=403, content={"detail": "Invalid token"})
@@ -182,8 +205,19 @@ class AuthMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 
+# Initialize OIDC validator (None if not configured or unreachable)
+oidc_validator = None
+if OIDC_ISSUER_URL:
+    from utils.oidc import OIDCValidator
+
+    oidc_validator = OIDCValidator.create_from_issuer(OIDC_ISSUER_URL)
+    if oidc_validator:
+        logger.info("OIDC authentication enabled", issuer=OIDC_ISSUER_URL)
+    else:
+        logger.warning("OIDC issuer unreachable, OIDC auth disabled", issuer=OIDC_ISSUER_URL)
+
 # Register middlewares (order matters - last added runs first)
-app.add_middleware(AuthMiddleware)
+app.add_middleware(AuthMiddleware, oidc_validator=oidc_validator)
 app.add_middleware(TokenRedactingMiddleware)
 
 
