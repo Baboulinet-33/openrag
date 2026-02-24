@@ -7,6 +7,7 @@ from collections import deque
 from typing import ClassVar
 
 import ray
+from components.indexer.utils.text_sanitizer import sanitize_text
 from config import load_config
 from fast_langdetect import LangDetectConfig, LangDetector
 from langchain_core.documents.base import Document
@@ -118,6 +119,36 @@ def format_context(
     sep = "-" * 10 + "\n\n"
     logger.debug("Context formatted", total_tokens=total_tokens, doc_count=len(reduced_docs))
     return f"{sep}".join(reduced_docs), included_indices
+
+
+def format_web_context(
+    web_results: list,
+    start_index: int = 1,
+) -> tuple[str, list[int]]:
+    """Format web results as numbered [Source N] blocks.
+
+    Args:
+        web_results: Results from web search provider (list of WebResult)
+        start_index: First source number (continues numbering after RAG sources)
+
+    Returns:
+        (formatted_string, list_of_source_numbers_used)
+    """
+    if not web_results:
+        return "", []
+
+    parts = []
+    source_numbers = []
+    for i, result in enumerate(web_results):
+        n = start_index + i
+        title = sanitize_text(result.title)
+        snippet = sanitize_text(result.snippet)
+        url = result.url
+        parts.append(f"[Source {n}]\n{title}\n{url}\n{snippet}")
+        source_numbers.append(n)
+
+    sep = "-" * 10 + "\n\n"
+    return sep.join(parts), source_numbers
 
 
 def extract_and_strip_sources_block(text: str) -> tuple[str, set[int]]:

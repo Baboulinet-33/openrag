@@ -67,6 +67,11 @@ map_reduce:
   # Enable debug logging for map & reduce
   debug: ${oc.decode:${oc.env:MAP_REDUCE_DEBUG, false}}
 
+websearch:
+  staan_api_token: ${oc.env:STAAN_API_TOKEN, ""}
+  top_k: ${oc.decode:${oc.env:STAAN_TOP_K, 5}}
+  market: ${oc.env:STAAN_MARKET, fr-FR}
+
 verbose:
   level: ${oc.env:LOG_LEVEL, DEBUG}
 

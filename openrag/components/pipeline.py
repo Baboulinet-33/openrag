@@ -1,3 +1,4 @@
+import asyncio
 import copy
 from enum import Enum
 
@@ -6,6 +7,8 @@ from components.prompts import (
     SPOKEN_STYLE_ANSWER_PROMPT,
     SYS_PROMPT_TMPLT,
 )
+from components.websearch import WebSearchService
+from components.websearch.providers import StaanProvider
 from config import load_config
 from langchain_core.documents.base import Document
 from openai import AsyncOpenAI
@@ -15,7 +18,7 @@ from .llm import LLM
 from .map_reduce import RAGMapReduce
 from .reranker import Reranker
 from .retriever import BaseRetriever, RetrieverFactory
-from .utils import format_context
+from .utils import format_context, format_web_context
 
 logger = get_logger()
 config = load_config()
@@ -89,6 +92,20 @@ class RagPipeline:
         # map reduce
         self.map_reduce: RAGMapReduce = RAGMapReduce(config=config)
 
+        # Web search
+        staan_token = config.websearch.get("staan_api_token", "")
+        if staan_token:
+            provider = StaanProvider(
+                api_token=staan_token,
+                top_k=config.websearch.get("top_k", 5),
+                market=config.websearch.get("market", "fr-FR"),
+            )
+            self.web_search_service = WebSearchService(provider=provider)
+            logger.info("Web search enabled with Staan provider")
+        else:
+            self.web_search_service = WebSearchService(provider=None)
+            logger.info("Web search disabled (STAAN_API_TOKEN not set)")
+
     async def generate_query(self, messages: list[dict]) -> str:
         match RAGMODE(self.rag_mode):
             case RAGMODE.SIMPLERAG:
@@ -125,6 +142,9 @@ class RagPipeline:
         messages = payload["messages"]
         messages = messages[-self.chat_history_depth :]  # limit history depth
 
+        # Extract raw user message BEFORE generate_query reformulates it
+        raw_user_query = messages[-1]["content"] if messages else ""
+
         # 1. get the query
         query = await self.generate_query(messages)
         logger.debug("Prepared query for chat completion", query=query)
@@ -133,16 +153,25 @@ class RagPipeline:
 
         use_map_reduce = metadata.get("use_map_reduce", False)
         spoken_style_answer = metadata.get("spoken_style_answer", False)
+        use_websearch = metadata.get("websearch", False)
 
         logger.debug(
             "Metadata parameters",
             use_map_reduce=use_map_reduce,
             spoken_style_answer=spoken_style_answer,
+            use_websearch=use_websearch,
         )
 
-        # 2. get docs
+        # 2. get docs (and optionally web results) — concurrent when websearch enabled
         top_k = config.map_reduce["max_total_documents"] if use_map_reduce else None
-        docs = await self.retriever_pipeline.retrieve_docs(partition=partition, query=query, top_k=top_k)
+        if use_websearch:
+            docs, web_results = await asyncio.gather(
+                self.retriever_pipeline.retrieve_docs(partition=partition, query=query, top_k=top_k),
+                self.web_search_service.search(raw_user_query),
+            )
+        else:
+            docs = await self.retriever_pipeline.retrieve_docs(partition=partition, query=query, top_k=top_k)
+            web_results = []
 
         if use_map_reduce and docs:
             docs = await self.map_reduce.map(query=query, chunks=docs)
@@ -150,6 +179,17 @@ class RagPipeline:
         # 3. Format the retrieved docs
         context, included_indices = format_context(docs, max_context_tokens=self.max_context_tokens)
         docs = [docs[i] for i in included_indices]
+
+        # Avoid misleading "No document found" when web results will provide context
+        if not docs and web_results:
+            context = ""
+
+        # Format web context with continuous source numbering after RAG sources
+        n_rag_sources = len(docs)
+        web_context_str = ""
+        if web_results:
+            web_formatted, _ = format_web_context(web_results, start_index=n_rag_sources + 1)
+            web_context_str = f"\n\n## Web Search Results\n\n{web_formatted}"
 
         # 4. prepare the output
         messages: list = copy.deepcopy(messages)
@@ -161,11 +201,50 @@ class RagPipeline:
             0,
             {
                 "role": "system",
-                "content": prompt.format(context=context),
+                "content": prompt.format(context=context, web_context=web_context_str),
             },
         )
         payload["messages"] = messages
-        return payload, docs
+        return payload, docs, web_results
+
+    async def _prepare_for_web_only(self, payload: dict):
+        """Web-only mode: web search as sole context source, no RAG retrieval."""
+        messages = payload["messages"]
+        messages = messages[-self.chat_history_depth :]
+
+        raw_user_query = messages[-1]["content"] if messages else ""
+
+        metadata = payload.get("metadata", {})
+        spoken_style_answer = metadata.get("spoken_style_answer", False)
+
+        logger.info(
+            "Web-only mode: skipping RAG retrieval, using web results as sole context", query=raw_user_query[:100]
+        )
+
+        web_results = await self.web_search_service.search(raw_user_query)
+
+        # Issue 1 fix: if no web results (STAAN token not set or search fails),
+        # return early with unmodified payload so the LLM operates in plain direct mode
+        if not web_results:
+            return payload, [], []
+
+        # Format web context starting at Source 1 (no RAG sources precede it)
+        web_formatted, _ = format_web_context(web_results, start_index=1)
+        web_context_str = f"\n\n## Web Search Results\n\n{web_formatted}"
+
+        messages = copy.deepcopy(messages)
+        prompt = SPOKEN_STYLE_ANSWER_PROMPT if spoken_style_answer else SYS_PROMPT_TMPLT
+
+        messages.insert(
+            0,
+            {
+                "role": "system",
+                # context="" directly — NOT format_context([]) which returns "No document found from the database"
+                "content": prompt.format(context="", web_context=web_context_str),
+            },
+        )
+        payload["messages"] = messages
+        return payload, [], web_results
 
     async def _prepare_for_completions(self, partition: list[str], payload: dict):
         prompt = payload["prompt"]
@@ -199,9 +278,18 @@ class RagPipeline:
         return llm_output, docs
 
     async def chat_completion(self, partition: list[str] | None, payload: dict):
-        if partition is None:
+        metadata = payload.get("metadata", {})
+        use_websearch = metadata.get("websearch", False)
+
+        if partition is None and use_websearch:
+            # Web-only mode: web results as sole context, no RAG retrieval
+            payload, docs, web_results = await self._prepare_for_web_only(payload)
+        elif partition is None:
+            # Direct LLM mode: no RAG, no web search
             docs = []
+            web_results = []
         else:
-            payload, docs = await self._prepare_for_chat_completion(partition=partition, payload=payload)
+            # Combined mode: RAG retrieval + optional web search
+            payload, docs, web_results = await self._prepare_for_chat_completion(partition=partition, payload=payload)
         llm_output = self.llm_client.chat_completion(request=payload)
-        return llm_output, docs
+        return llm_output, docs, web_results
