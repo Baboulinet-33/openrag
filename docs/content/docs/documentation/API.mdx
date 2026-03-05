@@ -74,6 +74,23 @@ Upload a new file to a specific partition for indexing.
 - `file` (binary): File to upload
 - `metadata` (JSON string): File metadata (e.g., `{"owner": "user1"}`)
 
+:::tip Enriching chunks with path metadata (`chunk_kwargs`)
+The `metadata` field accepts an optional `chunk_kwargs` key: a nested object whose key-value pairs are injected into every chunk's text representation alongside the filename, improving hybrid search retrieval.
+
+This is useful when the file path encodes meaningful context that the document body alone does not. For example, a file stored at `project_name / client / minutes / minute of 28 Mars 2025.md` naturally expresses a project, a client, a document type, and a date. Passing these as `chunk_kwargs` makes them searchable:
+
+```json
+{
+  "owner": "user1",
+  "chunk_kwargs": {
+    "file origine": "project_name / client / meetings / minute 28 Mars 2025.mdx"
+  }
+}
+```
+
+Each entry is rendered as `* key: value` in the indexed chunk, just like the filename, so the retriever can match on those terms during hybrid search.
+:::
+
 **Responses:**
 - `201 Created`: Returns task status URL
 - `409 Conflict`: File already exists in partition

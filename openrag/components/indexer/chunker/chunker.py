@@ -24,8 +24,20 @@ CONTEXTUALIZATION_TIMEOUT = config.chunker.get("contextualization_timeout", 120)
 # Maximum concurrent contextualization tasks to prevent system overload
 MAX_CONCURRENT_CONTEXTUALIZATION = config.chunker.get("max_concurrent_contextualization", 10)
 
-BASE_CHUNK_FORMAT = "* filename: {filename}\n\n[CHUNK_START]\n\n{content}\n\n[CHUNK_END]"
-CHUNK_FORMAT = "[CONTEXT]\n\n{chunk_context}\n\n" + BASE_CHUNK_FORMAT
+
+def _format_chunk(
+    content: str,
+    filename: str,
+    chunk_kwargs: dict | None = None,
+    chunk_context: str | None = None,
+) -> str:
+    metadata_lines = f"* filename: {filename}"
+    for k, v in (chunk_kwargs or {}).items():
+        metadata_lines += f"\n* {k}: {v}"
+    base = f"{metadata_lines}\n\n[CHUNK_START]\n\n{content}\n\n[CHUNK_END]"
+    if chunk_context:
+        return f"[CONTEXT]\n\n{chunk_context}\n\n{base}"
+    return base
 
 
 class ChunkContextualizer:
@@ -118,17 +130,22 @@ class ChunkContextualizer:
                 )
                 contexts.extend(batch_contexts)
 
-            return [
-                Document(
-                    page_content=CHUNK_FORMAT.format(
-                        content=chunk.page_content,
-                        chunk_context=context,
-                        filename=filename,
-                    ),
-                    metadata=chunk.metadata,
+            result = []
+            for chunk, context in zip(chunks, contexts, strict=True):
+                metadata = dict(chunk.metadata)
+                chunk_kwargs = metadata.pop("chunk_kwargs", None)
+                result.append(
+                    Document(
+                        page_content=_format_chunk(
+                            content=chunk.page_content,
+                            filename=filename,
+                            chunk_kwargs=chunk_kwargs,
+                            chunk_context=context,
+                        ),
+                        metadata=metadata,
+                    )
                 )
-                for chunk, context in zip(chunks, contexts, strict=True)
-            ]
+            return result
 
         except Exception as e:
             logger.warning(f"Error contextualizing chunks from `{filename}`: {e}")
@@ -168,13 +185,19 @@ class BaseChunker:
     ) -> list[Document]:
         """Apply contextualization if enabled."""
         if not self.contextual_retrieval or len(chunks) < 2:
-            return [
-                Document(
-                    page_content=BASE_CHUNK_FORMAT.format(chunk_context="", filename=filename, content=c.page_content),
-                    metadata=c.metadata,
+            result = []
+            for c in chunks:
+                metadata = dict(c.metadata)
+                chunk_kwargs = metadata.pop("chunk_kwargs", None)
+                result.append(
+                    Document(
+                        page_content=_format_chunk(
+                            content=c.page_content, filename=filename, chunk_kwargs=chunk_kwargs
+                        ),
+                        metadata=metadata,
+                    )
                 )
-                for c in chunks
-            ]
+            return result
 
         return await self.contextualizer.contextualize_chunks(chunks, lang=lang, filename=filename)
 
