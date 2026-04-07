@@ -84,15 +84,15 @@ class DistributedSemaphore:
         await semaphore_actor.release.remote()
 
 
-_cached_length_function = None
+_cached_count_tokens = None
 
 
 def get_num_tokens():
-    global _cached_length_function
-    if _cached_length_function is None:
+    global _cached_count_tokens
+    if _cached_count_tokens is None:
         llm = ChatOpenAI(**config.llm.model_dump())
-        _cached_length_function = llm.get_num_tokens
-    return _cached_length_function
+        _cached_count_tokens = llm.get_num_tokens
+    return _cached_count_tokens
 
 
 def format_context(
@@ -101,7 +101,7 @@ def format_context(
     if not docs:
         return "No document found from the database", []
 
-    _length_function = get_num_tokens()
+    _count_tokens = get_num_tokens()
 
     reduced_docs = []
     included_indices = []
@@ -109,9 +109,9 @@ def format_context(
 
     for i, doc in enumerate(docs):
         prefix = f"[Source {len(reduced_docs) + 1}]\n" if number_sources else ""
-        n_tokens = _length_function(doc.page_content)
+        n_tokens = _count_tokens(doc.page_content)
         if prefix:
-            n_tokens += _length_function(prefix)
+            n_tokens += _count_tokens(prefix)
         if total_tokens + n_tokens > max_context_tokens:
             break
         reduced_docs.append(f"{prefix}{doc.page_content}")
@@ -142,7 +142,8 @@ def format_web_context(
     if not web_results:
         return "", [], 0
 
-    _length_function = get_num_tokens()
+    _count_tokens = get_num_tokens()
+    per_source_budget = max_tokens // len(web_results)
 
     parts = []
     source_numbers = []
@@ -152,8 +153,20 @@ def format_web_context(
         n = start_index + i
         title = sanitize_text(result.title)
         body = sanitize_text(result.content) if result.content else sanitize_text(result.snippet)
-        block = f"[Source {n}]\n{title}\n{body}"
-        block_tokens = _length_function(block)
+        prefix = f"[Source {n}]\n{title}\n"
+        block = f"{prefix}{body}"
+        block_tokens = _count_tokens(block)
+        # Truncate body if this single source exceeds its fair share
+        if block_tokens > per_source_budget:
+            prefix_tokens = _count_tokens(prefix)
+            body_budget_tokens = per_source_budget - prefix_tokens
+            if body_budget_tokens <= 0:
+                continue
+            # Shrink by ratio: estimate how many chars fit the token budget
+            ratio = body_budget_tokens / max(block_tokens - prefix_tokens, 1)
+            body = body[: int(len(body) * ratio)].rstrip()
+            block = f"{prefix}{body}"
+            block_tokens = per_source_budget
         if total_tokens + block_tokens > max_tokens and parts:
             break
         parts.append(block)
@@ -203,15 +216,26 @@ def filter_sources_by_citations(sources: list, citations: set[int] | None) -> li
     """Keep only sources whose 1-based index was cited.
 
     - citations is None:      LLM didn't include tag → fallback to all sources
-    - citations is empty set:  LLM said [Sources: none] → return no sources
-    - citations has values:    filter to cited sources only
+    - citations is empty set:  LLM said [Sources: none] → return no sources (but keep web sources)
+    - citations has values:    filter to cited sources only (but always keep web sources)
+
+    Web sources are always preserved because their URLs are inherently useful as
+    references, even when the LLM doesn't explicitly cite them.
     """
     if citations is None:
         return sources
+    web_sources = [s for s in sources if s.get("source_type") == "web"]
     if not citations:
-        return []
+        return web_sources
     filtered = [s for i, s in enumerate(sources, start=1) if i in citations]
-    return filtered if filtered else sources
+    if not filtered:
+        return sources
+    # Add back any web sources not already included
+    filtered_urls = {s.get("url") for s in filtered if s.get("url")}
+    for ws in web_sources:
+        if ws.get("url") not in filtered_urls:
+            filtered.append(ws)
+    return filtered
 
 
 async def stream_with_source_filtering(

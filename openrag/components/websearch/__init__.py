@@ -25,21 +25,29 @@ class WebSearchFactory:
         if provider_cls is None:
             raise ValueError(f"Unsupported web search provider: {provider_name}")
 
+        top_k = ws_config.top_k
         provider = provider_cls(
             api_token=api_token,
             base_url=ws_config.base_url,
-            top_k=ws_config.top_k,
+            top_k=top_k,
             lang=ws_config.lang,
         )
 
         content_fetcher = None
+        fetch_max_tokens = ws_config.fetch_max_tokens
         if ws_config.fetch_content:
             content_fetcher = ContentFetcher(
                 max_results=ws_config.fetch_max_results,
                 timeout=ws_config.fetch_timeout,
-                max_tokens_per_page=ws_config.fetch_max_tokens,
+                max_tokens_per_page=fetch_max_tokens,
                 verify_ssl=ws_config.fetch_verify_ssl,
             )
+
+        # Ensure total budget can fit all sources (per-page budget * top_k)
+        if fetch_max_tokens and top_k:
+            min_budget = fetch_max_tokens * top_k
+            if max_tokens < min_budget:
+                max_tokens = min_budget
 
         return WebSearchService(
             provider=provider,

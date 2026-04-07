@@ -202,10 +202,10 @@ def validate_tokens_limit(
         Tuple of (is_valid, error_message)
     """
     try:
-        _length_function = get_num_tokens()
+        _count_tokens = get_num_tokens()
 
         if isinstance(request, OpenAIChatCompletionRequest):
-            message_tokens = sum(_length_function(m.content or "") + 4 for m in request.messages)
+            message_tokens = sum(_count_tokens(m.content or "") + 4 for m in request.messages)
             default_output_tokens = int(config.llm_context.max_output_tokens)
             requested_tokens = request.max_tokens or default_output_tokens
             total_tokens_needed = message_tokens + requested_tokens
@@ -228,7 +228,7 @@ def validate_tokens_limit(
                 )
 
         elif isinstance(request, OpenAICompletionRequest):
-            prompt_tokens = _length_function(request.prompt)
+            prompt_tokens = _count_tokens(request.prompt)
             default_output_tokens = int(config.llm_context.max_output_tokens)
             requested_tokens = request.max_tokens or default_output_tokens
             total_tokens_needed = prompt_tokens + requested_tokens

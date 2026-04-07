@@ -301,11 +301,11 @@ class RagPipeline:
             context = f"{context}{SOURCE_SEPARATOR}{web_formatted}" if context else web_formatted
 
         # 4. prepare the output
+        logger.debug("Context sent to LLM", context_length=len(context))
         messages: list = copy.deepcopy(messages)
 
         # prepend the messages with the system prompt
         prompt = SPOKEN_STYLE_ANSWER_PROMPT if spoken_style_answer else SYS_PROMPT_TMPLT
-
         messages.insert(
             0,
             {

@@ -103,53 +103,99 @@ class TestExtractAndStripSourcesBlock:
 
 class TestFilterSourcesByCitations:
     def test_basic_filtering(self):
-        sources = ["a", "b", "c", "d", "e"]
+        sources = [
+            {"source_type": "document", "file": "a"},
+            {"source_type": "document", "file": "b"},
+            {"source_type": "document", "file": "c"},
+            {"source_type": "document", "file": "d"},
+            {"source_type": "document", "file": "e"},
+        ]
         result = filter_sources_by_citations(sources, {1, 3, 5})
-        assert result == ["a", "c", "e"]
+        assert result == [sources[0], sources[2], sources[4]]
 
     def test_none_citations_returns_all(self):
-        sources = ["a", "b", "c"]
+        sources = [{"source_type": "document", "file": "a"}, {"source_type": "document", "file": "b"}]
         result = filter_sources_by_citations(sources, None)
-        assert result == ["a", "b", "c"]
+        assert result == sources
 
-    def test_empty_citations_returns_empty(self):
-        sources = ["a", "b", "c"]
+    def test_empty_citations_returns_empty_for_docs(self):
+        sources = [{"source_type": "document", "file": "a"}, {"source_type": "document", "file": "b"}]
         result = filter_sources_by_citations(sources, set())
         assert result == []
 
+    def test_empty_citations_keeps_web_sources(self):
+        web = {"source_type": "web", "url": "https://example.com"}
+        sources = [{"source_type": "document", "file": "a"}, web]
+        result = filter_sources_by_citations(sources, set())
+        assert result == [web]
+
     def test_out_of_range_citations_fallback(self):
-        sources = ["a", "b", "c"]
+        sources = [{"source_type": "document", "file": "a"}, {"source_type": "document", "file": "b"}]
         result = filter_sources_by_citations(sources, {99})
-        assert result == ["a", "b", "c"]
+        assert result == sources
 
     def test_partial_out_of_range(self):
-        sources = ["a", "b", "c"]
+        sources = [
+            {"source_type": "document", "file": "a"},
+            {"source_type": "document", "file": "b"},
+            {"source_type": "document", "file": "c"},
+        ]
         result = filter_sources_by_citations(sources, {1, 99})
-        assert result == ["a"]
+        assert result == [sources[0]]
 
     def test_single_citation(self):
-        sources = ["a", "b", "c"]
+        sources = [
+            {"source_type": "document", "file": "a"},
+            {"source_type": "document", "file": "b"},
+            {"source_type": "document", "file": "c"},
+        ]
         result = filter_sources_by_citations(sources, {2})
-        assert result == ["b"]
+        assert result == [sources[1]]
 
     def test_empty_sources(self):
         result = filter_sources_by_citations([], {1, 2})
         assert result == []
 
     def test_all_cited(self):
-        sources = ["a", "b", "c"]
+        sources = [
+            {"source_type": "document", "file": "a"},
+            {"source_type": "document", "file": "b"},
+            {"source_type": "document", "file": "c"},
+        ]
         result = filter_sources_by_citations(sources, {1, 2, 3})
-        assert result == ["a", "b", "c"]
+        assert result == sources
 
     def test_preserves_order(self):
-        sources = ["a", "b", "c", "d"]
+        sources = [
+            {"source_type": "document", "file": "a"},
+            {"source_type": "document", "file": "b"},
+            {"source_type": "document", "file": "c"},
+            {"source_type": "document", "file": "d"},
+        ]
         result = filter_sources_by_citations(sources, {4, 2})
-        assert result == ["b", "d"]
+        assert result == [sources[1], sources[3]]
 
-    def test_with_dict_sources(self):
-        sources = [{"file": "a.pdf"}, {"file": "b.pdf"}, {"file": "c.pdf"}]
-        result = filter_sources_by_citations(sources, {1, 3})
-        assert result == [{"file": "a.pdf"}, {"file": "c.pdf"}]
+    def test_cited_docs_plus_uncited_web_preserved(self):
+        doc1 = {"source_type": "document", "file": "a.pdf"}
+        doc2 = {"source_type": "document", "file": "b.pdf"}
+        web = {"source_type": "web", "url": "https://example.com"}
+        sources = [doc1, doc2, web]
+        result = filter_sources_by_citations(sources, {1})
+        assert result == [doc1, web]
+
+    def test_cited_web_not_duplicated(self):
+        doc = {"source_type": "document", "file": "a.pdf"}
+        web = {"source_type": "web", "url": "https://example.com"}
+        sources = [doc, web]
+        result = filter_sources_by_citations(sources, {1, 2})
+        assert result == [doc, web]
+
+    def test_web_only_sources_none_citations(self):
+        web1 = {"source_type": "web", "url": "https://a.com"}
+        web2 = {"source_type": "web", "url": "https://b.com"}
+        sources = [web1, web2]
+        result = filter_sources_by_citations(sources, set())
+        assert result == [web1, web2]
 
 
 # --- helpers for streaming tests ---
