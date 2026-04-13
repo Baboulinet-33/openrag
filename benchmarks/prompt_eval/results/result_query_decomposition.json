@@ -1,0 +1,4235 @@
+{
+  "dataset": "datasets/query_contextualizer.json",
+  "prompts": [
+    {
+      "prompt": "prompts/query_contextualizer_tmpl.txt",
+      "models": [
+        {
+          "model_name": "Mistral-Small-3.1-24B-Instruct-2503",
+          "timestamp": "2026-04-13T11:32:53.776173",
+          "prompt_path": "prompts/query_contextualizer_tmpl.txt",
+          "dataset_path": "datasets/query_contextualizer.json",
+          "total": 80,
+          "passed": 65,
+          "failed": 15,
+          "errors": 0,
+          "accuracy": 0.8125,
+          "by_difficulty": {
+            "1": {
+              "total": 20,
+              "passed": 20,
+              "failed": 0,
+              "errors": 0,
+              "accuracy": 1.0
+            },
+            "2": {
+              "total": 39,
+              "passed": 36,
+              "failed": 3,
+              "errors": 0,
+              "accuracy": 0.9230769230769231
+            },
+            "3": {
+              "total": 21,
+              "passed": 9,
+              "failed": 12,
+              "errors": 0,
+              "accuracy": 0.42857142857142855
+            }
+          },
+          "cases": [
+            {
+              "id": 13,
+              "difficulty": 1,
+              "domain": "agriculture",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "optimal irrigation frequency for winter wheat during the tillering stage"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 19,
+              "difficulty": 1,
+              "domain": "insurance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the loss ratio for the commercial property line?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 9,
+              "difficulty": 1,
+              "domain": "real_estate",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average rental yield for residential properties in Lyon?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 14,
+              "difficulty": 1,
+              "domain": "energy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the capacity factor of the wind farm in Normandy?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 63,
+              "difficulty": 3,
+              "domain": "technology",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the main architectural differences between Kafka and RabbitMQ?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 15,
+              "difficulty": 1,
+              "domain": "manufacturing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the rework procedure for solder joint failures on Line C?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 67,
+              "difficulty": 3,
+              "domain": "science",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the known interactions between metformin and ibuprofen?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 75,
+              "difficulty": 3,
+              "domain": "marketing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How should enterprise software be positioned to IT decision-makers and end users"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 3,
+              "difficulty": 1,
+              "domain": "legal",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the statute of limitations for breach of contract in California?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 2,
+              "difficulty": 1,
+              "domain": "healthcare",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the recommended flu vaccination schedule for adults over 65?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 16,
+              "difficulty": 1,
+              "domain": "public_policy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the carbon tax rate per ton of CO2 in France?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 17,
+              "difficulty": 1,
+              "domain": "retail",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the safety stock level for the premium wireless headphones?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 12,
+              "difficulty": 1,
+              "domain": "logistics",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the current lead time for ocean freight from Shanghai to Rotterdam?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 69,
+              "difficulty": 3,
+              "domain": "engineering",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the thermal conductivity and fire resistance ratings of ceramic fiber insulation?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 6,
+              "difficulty": 1,
+              "domain": "HR",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the parental leave entitlement for employees in the French office?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 4,
+              "difficulty": 1,
+              "domain": "engineering",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the maximum rainfall intensity for a 10-year return period in Toulouse?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 20,
+              "difficulty": 1,
+              "domain": "aviation",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "When is the next C-check due for aircraft registration F-GKXA?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 7,
+              "difficulty": 1,
+              "domain": "education",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How many students graduated from the computer science program in 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 65,
+              "difficulty": 3,
+              "domain": "environment",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What has been the trend in Amazon deforestation rates over the last five years?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 68,
+              "difficulty": 3,
+              "domain": "retail",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do product return rates typically compare between the summer and winter seasons?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 11,
+              "difficulty": 1,
+              "domain": "environment",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the total energy consumption of the Paris headquarters in 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 66,
+              "difficulty": 3,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What does the onboarding process look like for sales and customer success new hires?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 1,
+              "difficulty": 1,
+              "domain": "finance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the total revenue in Q3 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 10,
+              "difficulty": 1,
+              "domain": "technology",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the recommended steps for migrating a MySQL database to PostgreSQL?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 18,
+              "difficulty": 1,
+              "domain": "telecommunications",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the packet loss rate on the fiber backbone between Paris and Marseille?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 5,
+              "difficulty": 1,
+              "domain": "science",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average mutation rate of human mitochondrial DNA?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 74,
+              "difficulty": 3,
+              "domain": "aviation",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the differences in certification requirements between EASA and FAA for commercial drone operations?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 8,
+              "difficulty": 1,
+              "domain": "marketing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average engagement rate for sponsored posts on Instagram targeting the 25\u201335 age group?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 73,
+              "difficulty": 3,
+              "domain": "education",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How is differentiated instruction applied in elementary school classrooms?",
+                "How is differentiated instruction applied in middle school classrooms?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 62,
+              "difficulty": 3,
+              "domain": "healthcare",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the standard discharge procedure for elderly patients?",
+                "What is the standard discharge procedure for pediatric patients?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 39,
+              "difficulty": 2,
+              "domain": "insurance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the average claim resolution time for auto insurance claims?",
+                "What is the average claim resolution time for home insurance claims?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 23,
+              "difficulty": 2,
+              "domain": "legal",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the data privacy requirements in the EU?",
+                "What are the data privacy requirements in Brazil?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 58,
+              "difficulty": 2,
+              "domain": "environment",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the annual water consumption at manufacturing operations?",
+                "What is the annual water consumption at data center operations?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 27,
+              "difficulty": 2,
+              "domain": "education",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the student outcome results for project-based learning?",
+                "What are the student outcome results for traditional lecture-based instruction?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 52,
+              "difficulty": 2,
+              "domain": "insurance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Number of flood insurance claims in 2023",
+                "Number of flood insurance claims in 2024"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 35,
+              "difficulty": 2,
+              "domain": "manufacturing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the overall defect rate for Assembly Line A this quarter?",
+                "What is the overall defect rate for Assembly Line B this quarter?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 26,
+              "difficulty": 2,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the employee satisfaction scores for the London office?",
+                "What are the employee satisfaction scores for the Singapore office?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 49,
+              "difficulty": 2,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average soil nitrogen levels in the soybean fields?",
+                "What are the average soil nitrogen levels in the cotton fields?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 64,
+              "difficulty": 3,
+              "domain": "legal",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the protection duration for trade secrets and patents?",
+                "What are the disclosure requirements for trade secrets and patents?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 53,
+              "difficulty": 2,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the monthly churn rate for the Premium plan?",
+                "What is the monthly churn rate for the Basic plan?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 79,
+              "difficulty": 3,
+              "domain": "real_estate",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How do rising interest rates affect residential property investment returns?",
+                "How does increasing housing supply affect residential property investment returns?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 29,
+              "difficulty": 2,
+              "domain": "real_estate",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average commercial lease rates in downtown Manhattan?",
+                "What are the average commercial lease rates in the Miami financial district?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 38,
+              "difficulty": 2,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average 5G download speeds in urban areas on our network?",
+                "What are the average 5G download speeds in rural areas on our network?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 77,
+              "difficulty": 3,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the recommended treatments for aphids in corn crops?",
+                "What are the recommended treatments for rootworm in corn crops?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 32,
+              "difficulty": 2,
+              "domain": "logistics",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average delivery times for shipments to Southeast Asia?",
+                "What are the average delivery times for shipments to Western Europe?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 56,
+              "difficulty": 2,
+              "domain": "science",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the latest clinical trial results for CRISPR treatments for sickle cell disease?",
+                "What are the latest clinical trial results for CRISPR treatments for beta-thalassemia?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 36,
+              "difficulty": 2,
+              "domain": "public_policy",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the rent control measures currently in place in Berlin?",
+                "What are the rent control measures currently in place in New York City?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 61,
+              "difficulty": 3,
+              "domain": "finance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Evolution of operating costs in the year 2024",
+                "Evolution of operating costs in the year 2025"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 24,
+              "difficulty": 2,
+              "domain": "engineering",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the fatigue resistance rating for carbon steel under cyclic loading?",
+                "What is the fatigue resistance rating for stainless steel under cyclic loading?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 47,
+              "difficulty": 2,
+              "domain": "marketing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the Net Promoter Scores for the ProLine series?",
+                "What are the Net Promoter Scores for the EcoLine series?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 22,
+              "difficulty": 3,
+              "domain": "healthcare",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the patient readmission rates in 2022?",
+                "What were the patient readmission rates in 2023?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 46,
+              "difficulty": 2,
+              "domain": "education",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How many students enrolled in the fall 2024 semester?",
+                "How many students enrolled in the spring 2025 semester?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 33,
+              "difficulty": 2,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the per-hectare yields for wheat this harvest season?",
+                "What were the per-hectare yields for corn this harvest season?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 72,
+              "difficulty": 3,
+              "domain": "manufacturing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the root causes of surface bubbling on the automotive paint line?",
+                "What are the root causes of adhesion failure on the automotive paint line?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 34,
+              "difficulty": 2,
+              "domain": "energy",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Solar energy generation at the farm in summer 2024",
+                "Solar energy generation at the farm in winter 2024"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 51,
+              "difficulty": 2,
+              "domain": "retail",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the revenue per square foot for the East Coast stores last quarter?",
+                "What was the revenue per square foot for the West Coast stores last quarter?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 25,
+              "difficulty": 2,
+              "domain": "science",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the average Arctic sea ice extent in summer 2015?",
+                "What was the average Arctic sea ice extent in summer 2020?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 40,
+              "difficulty": 2,
+              "domain": "aviation",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the on-time departure rate in January 2025?",
+                "What was the on-time departure rate in February 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 60,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What is the current exposure to foreign exchange risk?",
+                "What is the current exposure to interest rate risk?",
+                "What is the current exposure to commodity price risk?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 54,
+              "difficulty": 2,
+              "domain": "public_policy",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What is the current minimum wage in France?",
+                "What is the current minimum wage in Japan?",
+                "What is the current minimum wage in Australia?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 31,
+              "difficulty": 2,
+              "domain": "environment",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the total CO2 emissions for the main campus in Q1 of this year?",
+                "What were the total CO2 emissions for the main campus in Q3 of this year?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 21,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the returns on the S&P 500 index fund in 2025?",
+                "What were the returns on the emerging markets fund in 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 37,
+              "difficulty": 2,
+              "domain": "retail",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What were the total online sales figures for Black Friday?",
+                "What were the total online sales figures for Cyber Monday?",
+                "What were the total online sales figures for Christmas week?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 43,
+              "difficulty": 2,
+              "domain": "energy",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What percentage of electricity comes from renewables at Texas plants?",
+                "What percentage of electricity comes from renewables at Ohio plants?",
+                "What percentage of electricity comes from renewables at Oregon plants?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 78,
+              "difficulty": 3,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the coverage trade-offs between sub-6 GHz and mmWave bands for 5G deployment?",
+                "What are the throughput trade-offs between sub-6 GHz and mmWave bands for 5G deployment?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 76,
+              "difficulty": 3,
+              "domain": "insurance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "How does flood zone classification affect commercial property insurance premiums?",
+                "How does building age affect commercial property insurance premiums?",
+                "How do flood zone classification and building age jointly affect commercial property insurance premiums?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 28,
+              "difficulty": 2,
+              "domain": "marketing",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the click-through rate for the summer campaign on Facebook?",
+                "What was the click-through rate for the summer campaign on Instagram?",
+                "What was the click-through rate for the summer campaign on Google Ads?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 50,
+              "difficulty": 2,
+              "domain": "technology",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the API uptime percentage for January 2025?",
+                "What was the API uptime percentage for February 2025?",
+                "What was the API uptime percentage for March 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 30,
+              "difficulty": 2,
+              "domain": "technology",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What is the serverless pricing for AWS Lambda?",
+                "What is the serverless pricing for Google Cloud Functions?",
+                "What is the cold start latency for AWS Lambda?",
+                "What is the cold start latency for Google Cloud Functions?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 80,
+              "difficulty": 3,
+              "domain": "energy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What is the scalability of lithium-ion battery systems?",
+                "What is the round-trip efficiency of lithium-ion battery systems?",
+                "What is the scalability of pumped hydro storage?",
+                "What is the round-trip efficiency of pumped hydro storage?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 42,
+              "difficulty": 2,
+              "domain": "healthcare",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What are the average ER wait times at the Boston hospital?",
+                "What are the average ER wait times at the Philadelphia hospital?",
+                "What are the cardiology appointment lead times at the Boston hospital?",
+                "What are the cardiology appointment lead times at the Philadelphia hospital?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 59,
+              "difficulty": 2,
+              "domain": "real_estate",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the median home sale price in the Austin metro area in Q1 of 2025?",
+                "What was the median home sale price in the Austin metro area in Q2 of 2025?",
+                "What was the median home sale price in the Austin metro area in Q3 of 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 70,
+              "difficulty": 3,
+              "domain": "logistics",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What is the cost of air freight for transatlantic shipments?",
+                "What is the lead time of air freight for transatlantic shipments?",
+                "What is the cost of sea freight for transatlantic shipments?",
+                "What is the lead time of sea freight for transatlantic shipments?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 55,
+              "difficulty": 2,
+              "domain": "aviation",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What is the load factor for the New York\u2013London route?",
+                "What is the fuel cost per seat-mile for the New York\u2013London route?",
+                "What is the load factor for the Los Angeles\u2013Tokyo route?",
+                "What is the fuel cost per seat-mile for the Los Angeles\u2013Tokyo route?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 57,
+              "difficulty": 2,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What were the voluntary turnover rates for engineering in 2023?",
+                "What were the voluntary turnover rates for engineering in 2024?",
+                "What were the voluntary turnover rates for marketing in 2023?",
+                "What were the voluntary turnover rates for marketing in 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 71,
+              "difficulty": 3,
+              "domain": "public_policy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What were the short-term effects of the Finnish UBI pilot on employment?",
+                "What were the short-term effects of the Finnish UBI pilot on well-being?",
+                "What were the long-term effects of the Finnish UBI pilot on employment?",
+                "What were the long-term effects of the Finnish UBI pilot on well-being?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 41,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What were the returns of the Growth Fund in Q3 of 2024?",
+                "What were the returns of the Growth Fund in Q4 of 2024?",
+                "What were the returns of the Value Fund in Q3 of 2024?",
+                "What were the returns of the Value Fund in Q4 of 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 48,
+              "difficulty": 2,
+              "domain": "logistics",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What was the daily order processing volume at the Memphis hub in March 2025?",
+                "What was the daily order processing volume at the Memphis hub in April 2025?",
+                "What was the daily order processing volume at the Rotterdam hub in March 2025?",
+                "What was the daily order processing volume at the Rotterdam hub in April 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 44,
+              "difficulty": 2,
+              "domain": "legal",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What antitrust cases have been filed against Google in the last three years?",
+                "What antitrust cases have been filed against Apple in the last three years?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 45,
+              "difficulty": 2,
+              "domain": "manufacturing",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What was the overall equipment effectiveness for the Shenzhen factory in H1 of 2024?",
+                "What was the overall equipment effectiveness for the Munich factory in H1 of 2024?",
+                "What was the overall equipment effectiveness for the Shenzhen factory in H2 of 2024?",
+                "What was the overall equipment effectiveness for the Munich factory in H2 of 2024?"
+              ],
+              "error": null,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "model_name": "gpt-5.4",
+          "timestamp": "2026-04-13T11:32:58.265274",
+          "prompt_path": "prompts/query_contextualizer_tmpl.txt",
+          "dataset_path": "datasets/query_contextualizer.json",
+          "total": 80,
+          "passed": 66,
+          "failed": 14,
+          "errors": 0,
+          "accuracy": 0.825,
+          "by_difficulty": {
+            "1": {
+              "total": 20,
+              "passed": 20,
+              "failed": 0,
+              "errors": 0,
+              "accuracy": 1.0
+            },
+            "2": {
+              "total": 39,
+              "passed": 33,
+              "failed": 6,
+              "errors": 0,
+              "accuracy": 0.8461538461538461
+            },
+            "3": {
+              "total": 21,
+              "passed": 13,
+              "failed": 8,
+              "errors": 0,
+              "accuracy": 0.6190476190476191
+            }
+          },
+          "cases": [
+            {
+              "id": 6,
+              "difficulty": 1,
+              "domain": "HR",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the parental leave entitlement for employees in our French office?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 5,
+              "difficulty": 1,
+              "domain": "science",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average mutation rate of human mitochondrial DNA?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 14,
+              "difficulty": 1,
+              "domain": "energy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the capacity factor of the wind farm in Normandy?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 18,
+              "difficulty": 1,
+              "domain": "telecommunications",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the packet loss rate on the fiber backbone between Paris and Marseille?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 9,
+              "difficulty": 1,
+              "domain": "real_estate",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average rental yield for residential properties in Lyon?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 16,
+              "difficulty": 1,
+              "domain": "public_policy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the carbon tax rate per ton of CO2 in France?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 7,
+              "difficulty": 1,
+              "domain": "education",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How many students graduated from the computer science program last year?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 69,
+              "difficulty": 3,
+              "domain": "engineering",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the thermal conductivity and fire resistance ratings of ceramic fiber insulation?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 10,
+              "difficulty": 1,
+              "domain": "technology",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the recommended steps for migrating a MySQL database to PostgreSQL?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 78,
+              "difficulty": 3,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the coverage and throughput trade-offs between sub-6 GHz and mmWave frequency bands for 5G deployment?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 63,
+              "difficulty": 3,
+              "domain": "technology",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the main architectural differences between Apache Kafka and RabbitMQ?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 75,
+              "difficulty": 3,
+              "domain": "marketing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How should a new enterprise software product be positioned to both IT decision-makers and end users?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 34,
+              "difficulty": 2,
+              "domain": "energy",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How did solar energy generation at the farm compare between summer 2024 and winter 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 21,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the returns on the S&P 500 index fund last year?",
+                "What were the returns on the emerging markets fund last year?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 80,
+              "difficulty": 3,
+              "domain": "energy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do lithium-ion battery energy storage systems compare to pumped hydro energy storage in terms of scalability and round-trip efficiency?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 23,
+              "difficulty": 2,
+              "domain": "legal",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the data privacy requirements in the European Union?",
+                "What are the data privacy requirements in Brazil?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 39,
+              "difficulty": 2,
+              "domain": "insurance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the average claim resolution time for auto insurance claims?",
+                "What is the average claim resolution time for home insurance claims?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 19,
+              "difficulty": 1,
+              "domain": "insurance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the loss ratio for the commercial property line mentioned in the prior discussion about gross written premium growth last year?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 20,
+              "difficulty": 1,
+              "domain": "aviation",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "When is the next C-check due for aircraft registration F-GKXA?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 76,
+              "difficulty": 3,
+              "domain": "insurance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do flood zone classification and building age jointly affect commercial property insurance premiums?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 15,
+              "difficulty": 1,
+              "domain": "manufacturing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the rework procedure for solder joint failures on Line C after a batch fails solder joint inspection?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 56,
+              "difficulty": 2,
+              "domain": "science",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the latest clinical trial results for CRISPR treatments for sickle cell disease?",
+                "What are the latest clinical trial results for CRISPR treatments for beta-thalassemia?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 17,
+              "difficulty": 1,
+              "domain": "retail",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the safety stock level for the premium wireless headphones?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 2,
+              "difficulty": 1,
+              "domain": "healthcare",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the recommended flu vaccination schedule for adults over 65?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 79,
+              "difficulty": 3,
+              "domain": "real_estate",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do rising interest rates and increasing housing supply together affect residential property investment returns?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 58,
+              "difficulty": 2,
+              "domain": "environment",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the annual water consumption at our manufacturing operations?",
+                "What is the annual water consumption at our data center operations?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 68,
+              "difficulty": 3,
+              "domain": "retail",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do product return rates typically compare between the summer and winter seasons in retail?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 27,
+              "difficulty": 2,
+              "domain": "education",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the student outcome results for project-based learning compared with traditional lecture-based instruction?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 30,
+              "difficulty": 2,
+              "domain": "technology",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Compare the serverless pricing of AWS Lambda and Google Cloud Functions.",
+                "Compare the cold start latency of AWS Lambda and Google Cloud Functions."
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 8,
+              "difficulty": 1,
+              "domain": "marketing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average engagement rate for sponsored Instagram posts targeting the 25\u201335 age group?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 66,
+              "difficulty": 3,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What does the onboarding process look like for sales new hires?",
+                "What does the onboarding process look like for customer success new hires?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 3,
+              "difficulty": 1,
+              "domain": "legal",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the statute of limitations for breach of contract in California?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 46,
+              "difficulty": 2,
+              "domain": "education",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How many students enrolled in the fall 2024 semester?",
+                "How many students enrolled in the spring 2025 semester?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 28,
+              "difficulty": 2,
+              "domain": "marketing",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the click-through rate for the summer campaign on Facebook?",
+                "What was the click-through rate for the summer campaign on Instagram?",
+                "What was the click-through rate for the summer campaign on Google Ads?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 62,
+              "difficulty": 3,
+              "domain": "healthcare",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the standard discharge procedure for elderly patients?",
+                "What is the standard discharge procedure for pediatric patients?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 43,
+              "difficulty": 2,
+              "domain": "energy",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What percentage of electricity comes from renewables at the Texas plant?",
+                "What percentage of electricity comes from renewables at the Ohio plant?",
+                "What percentage of electricity comes from renewables at the Oregon plant?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 53,
+              "difficulty": 2,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the monthly churn rate for the Premium plan?",
+                "What is the monthly churn rate for the Basic plan?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 25,
+              "difficulty": 2,
+              "domain": "science",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the average Arctic sea ice extent in summer 2015?",
+                "What was the average Arctic sea ice extent in summer 2020?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 51,
+              "difficulty": 2,
+              "domain": "retail",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the revenue per square foot for East Coast stores last quarter?",
+                "What was the revenue per square foot for West Coast stores last quarter?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 77,
+              "difficulty": 3,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the recommended treatments for aphids in corn crops?",
+                "What are the recommended treatments for rootworm in corn crops?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 54,
+              "difficulty": 2,
+              "domain": "public_policy",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What is the current minimum wage in France?",
+                "What is the current minimum wage in Japan?",
+                "What is the current minimum wage in Australia?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 64,
+              "difficulty": 3,
+              "domain": "legal",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do trade secrets and patents differ in terms of protection duration and disclosure requirements when advising a client on whether to patent a process or keep it as a trade secret?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 65,
+              "difficulty": 3,
+              "domain": "environment",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What has been the trend in Amazon deforestation rates over the last five years?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 59,
+              "difficulty": 2,
+              "domain": "real_estate",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the median home sale price in the Austin metro area in Q1 2025?",
+                "What was the median home sale price in the Austin metro area in Q2 2025?",
+                "What was the median home sale price in the Austin metro area in Q3 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 22,
+              "difficulty": 3,
+              "domain": "healthcare",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How did patient readmission rates change in 2022?",
+                "How did patient readmission rates change in 2023?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 49,
+              "difficulty": 2,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average soil nitrogen levels in the soybean fields?",
+                "What are the average soil nitrogen levels in the cotton fields?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 47,
+              "difficulty": 2,
+              "domain": "marketing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the Net Promoter Scores for the ProLine series?",
+                "What are the Net Promoter Scores for the EcoLine series?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 70,
+              "difficulty": 3,
+              "domain": "logistics",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the cost differences between air freight and sea freight for transatlantic shipments?",
+                "What are the lead time differences between air freight and sea freight for transatlantic shipments?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 24,
+              "difficulty": 2,
+              "domain": "engineering",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the fatigue resistance ratings for carbon steel structural beams under cyclic loading in a bridge project?",
+                "What are the fatigue resistance ratings for stainless steel structural beams under cyclic loading in a bridge project?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 26,
+              "difficulty": 2,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the employee satisfaction scores for the London office?",
+                "What are the employee satisfaction scores for the Singapore office?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 72,
+              "difficulty": 3,
+              "domain": "manufacturing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the root causes of surface bubbling and adhesion failure on an automotive paint line?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 32,
+              "difficulty": 2,
+              "domain": "logistics",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average delivery times for shipments to Southeast Asia?",
+                "What are the average delivery times for shipments to Western Europe?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 38,
+              "difficulty": 2,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the average 5G download speeds in urban areas versus rural areas on our network?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 33,
+              "difficulty": 2,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the per-hectare yields for wheat this harvest season?",
+                "What were the per-hectare yields for corn this harvest season?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 11,
+              "difficulty": 1,
+              "domain": "environment",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the total energy consumption of the Paris headquarters in 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 67,
+              "difficulty": 3,
+              "domain": "science",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the known drug interactions between metformin and ibuprofen, including effects on blood sugar control, kidney function, and common clinical guidance?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 71,
+              "difficulty": 3,
+              "domain": "public_policy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the short-term effects of the Finnish universal basic income (UBI) pilot on employment and well-being in Finland?",
+                "What were the long-term effects of the Finnish universal basic income (UBI) pilot on employment and well-being in Finland?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 50,
+              "difficulty": 2,
+              "domain": "technology",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the API uptime percentage for January 2025?",
+                "What was the API uptime percentage for February 2025?",
+                "What was the API uptime percentage for March 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 57,
+              "difficulty": 2,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What were the voluntary turnover rates for engineering in 2023?",
+                "What were the voluntary turnover rates for engineering in 2024?",
+                "What were the voluntary turnover rates for marketing in 2023?",
+                "What were the voluntary turnover rates for marketing in 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 37,
+              "difficulty": 2,
+              "domain": "retail",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What were the total online sales figures for Black Friday?",
+                "What were the total online sales figures for Cyber Monday?",
+                "What were the total online sales figures for Christmas week?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 40,
+              "difficulty": 2,
+              "domain": "aviation",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the on-time departure rate in January 2025?",
+                "What was the on-time departure rate in February 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 61,
+              "difficulty": 3,
+              "domain": "finance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How have our operating costs evolved in the first of the past two years?",
+                "How have our operating costs evolved in the second of the past two years?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 52,
+              "difficulty": 2,
+              "domain": "insurance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How did the number of flood insurance claims compare in 2023?",
+                "How did the number of flood insurance claims compare in 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 74,
+              "difficulty": 3,
+              "domain": "aviation",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do EASA and FAA certification requirements differ for commercial drone operations for a new drone seeking certification in both Europe and the United States?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 41,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What were the returns of the Growth Fund in Q3 2024?",
+                "What were the returns of the Growth Fund in Q4 2024?",
+                "What were the returns of the Value Fund in Q3 2024?",
+                "What were the returns of the Value Fund in Q4 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 36,
+              "difficulty": 2,
+              "domain": "public_policy",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What rent control measures are currently in place in Berlin?",
+                "What rent control measures are currently in place in New York City?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 44,
+              "difficulty": 2,
+              "domain": "legal",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What antitrust cases have been filed against Google in the last three years in the tech sector, particularly in the EU and the US?",
+                "What antitrust cases have been filed against Apple in the last three years in the tech sector, particularly in the EU and the US?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 45,
+              "difficulty": 2,
+              "domain": "manufacturing",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What was the overall equipment effectiveness for the Shenzhen factory in H1 of 2024?",
+                "What was the overall equipment effectiveness for the Shenzhen factory in H2 of 2024?",
+                "What was the overall equipment effectiveness for the Munich factory in H1 of 2024?",
+                "What was the overall equipment effectiveness for the Munich factory in H2 of 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 48,
+              "difficulty": 2,
+              "domain": "logistics",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What was the daily order processing volume at the Memphis hub in March 2025?",
+                "What was the daily order processing volume at the Memphis hub in April 2025?",
+                "What was the daily order processing volume at the Rotterdam hub in March 2025?",
+                "What was the daily order processing volume at the Rotterdam hub in April 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 73,
+              "difficulty": 3,
+              "domain": "education",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How is differentiated instruction applied in elementary school classrooms?",
+                "How is differentiated instruction applied in middle school classrooms?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 35,
+              "difficulty": 2,
+              "domain": "manufacturing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the overall defect rates for Assembly Line A this quarter?",
+                "What are the overall defect rates for Assembly Line B this quarter?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 60,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What is the current exposure to foreign exchange risk?",
+                "What is the current exposure to interest rate risk?",
+                "What is the current exposure to commodity price risk?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 42,
+              "difficulty": 2,
+              "domain": "healthcare",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What are the average emergency room wait times at the Boston hospital?",
+                "What are the average emergency room wait times at the Philadelphia hospital?",
+                "What are the cardiology appointment lead times at the Boston hospital?",
+                "What are the cardiology appointment lead times at the Philadelphia hospital?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 31,
+              "difficulty": 2,
+              "domain": "environment",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the total CO2 emissions for the main campus in Q1 of this year?",
+                "What were the total CO2 emissions for the main campus in Q3 of this year?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 4,
+              "difficulty": 1,
+              "domain": "engineering",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the maximum rainfall intensity for a 10-year return period in Toulouse?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 12,
+              "difficulty": 1,
+              "domain": "logistics",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the current lead time for ocean freight from Shanghai to Rotterdam?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 13,
+              "difficulty": 1,
+              "domain": "agriculture",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the optimal irrigation frequency for winter wheat during the tillering stage?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 55,
+              "difficulty": 2,
+              "domain": "aviation",
+              "n_expected_queries": 4,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the load factor and fuel cost per seat-mile for the New York\u2013London route?",
+                "What are the load factor and fuel cost per seat-mile for the Los Angeles\u2013Tokyo route?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 29,
+              "difficulty": 2,
+              "domain": "real_estate",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average commercial lease rates in downtown Manhattan?",
+                "What are the average commercial lease rates in the Miami financial district?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 1,
+              "difficulty": 1,
+              "domain": "finance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the total revenue in Q3 2024?"
+              ],
+              "error": null,
+              "pass": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prompt": "prompts/query_contextualizer_v1_tmpl.txt",
+      "models": [
+        {
+          "model_name": "Mistral-Small-3.1-24B-Instruct-2503",
+          "timestamp": "2026-04-13T11:33:03.796478",
+          "prompt_path": "prompts/query_contextualizer_v1_tmpl.txt",
+          "dataset_path": "datasets/query_contextualizer.json",
+          "total": 80,
+          "passed": 63,
+          "failed": 17,
+          "errors": 0,
+          "accuracy": 0.7875,
+          "by_difficulty": {
+            "1": {
+              "total": 20,
+              "passed": 20,
+              "failed": 0,
+              "errors": 0,
+              "accuracy": 1.0
+            },
+            "2": {
+              "total": 39,
+              "passed": 30,
+              "failed": 9,
+              "errors": 0,
+              "accuracy": 0.7692307692307693
+            },
+            "3": {
+              "total": 21,
+              "passed": 13,
+              "failed": 8,
+              "errors": 0,
+              "accuracy": 0.6190476190476191
+            }
+          },
+          "cases": [
+            {
+              "id": 19,
+              "difficulty": 1,
+              "domain": "insurance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the loss ratio for the commercial property line?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 14,
+              "difficulty": 1,
+              "domain": "energy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the capacity factor of the wind farm in Normandy?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 63,
+              "difficulty": 3,
+              "domain": "technology",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the main architectural differences between Kafka and RabbitMQ?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 5,
+              "difficulty": 1,
+              "domain": "science",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average mutation rate of human mitochondrial DNA?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 3,
+              "difficulty": 1,
+              "domain": "legal",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the statute of limitations for breach of contract in California?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 15,
+              "difficulty": 1,
+              "domain": "manufacturing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the rework procedure for solder joint failures on Line C?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 13,
+              "difficulty": 1,
+              "domain": "agriculture",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the optimal irrigation frequency for winter wheat during the tillering stage?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 9,
+              "difficulty": 1,
+              "domain": "real_estate",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average rental yield for residential properties in Lyon?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 39,
+              "difficulty": 2,
+              "domain": "insurance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average claim resolution time for auto insurance versus home insurance claims?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 1,
+              "difficulty": 1,
+              "domain": "finance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the total revenue in Q3 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 16,
+              "difficulty": 1,
+              "domain": "public_policy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the carbon tax rate per ton of CO2 in France?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 17,
+              "difficulty": 1,
+              "domain": "retail",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the safety stock level for the premium wireless headphones?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 69,
+              "difficulty": 3,
+              "domain": "engineering",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the thermal conductivity and fire resistance ratings of ceramic fiber insulation?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 18,
+              "difficulty": 1,
+              "domain": "telecommunications",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the packet loss rate on the fiber backbone between Paris and Marseille?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 12,
+              "difficulty": 1,
+              "domain": "logistics",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the current lead time for ocean freight from Shanghai to Rotterdam?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 68,
+              "difficulty": 3,
+              "domain": "retail",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do product return rates typically compare between the summer and winter seasons?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 64,
+              "difficulty": 3,
+              "domain": "legal",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do trade secrets and patents differ in terms of protection duration and disclosure requirements?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 67,
+              "difficulty": 3,
+              "domain": "science",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the known interactions between metformin and ibuprofen?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 2,
+              "difficulty": 1,
+              "domain": "healthcare",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the recommended flu vaccination schedule for adults over 65?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 76,
+              "difficulty": 3,
+              "domain": "insurance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do flood zone classification and building age jointly affect commercial property insurance premiums?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 6,
+              "difficulty": 1,
+              "domain": "HR",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the parental leave entitlement for employees in the French office?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 20,
+              "difficulty": 1,
+              "domain": "aviation",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "When is the next C-check due for aircraft registration F-GKXA?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 74,
+              "difficulty": 3,
+              "domain": "aviation",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do EASA and FAA certification requirements differ for commercial drone operations?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 53,
+              "difficulty": 2,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the monthly churn rate for our Premium plan compared to our Basic plan?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 27,
+              "difficulty": 2,
+              "domain": "education",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the student outcome results for project-based learning versus traditional lecture-based instruction?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 10,
+              "difficulty": 1,
+              "domain": "technology",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the recommended steps for migrating a MySQL database to PostgreSQL?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 7,
+              "difficulty": 1,
+              "domain": "education",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How many students graduated from the computer science program in 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 11,
+              "difficulty": 1,
+              "domain": "environment",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the total energy consumption of the Paris headquarters in 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 66,
+              "difficulty": 3,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What does the onboarding process look like for sales and customer success new hires?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 79,
+              "difficulty": 3,
+              "domain": "real_estate",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do rising interest rates and increasing housing supply together affect residential property investment returns?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 4,
+              "difficulty": 1,
+              "domain": "engineering",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the maximum rainfall intensity for a 10-year return period in Toulouse?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 72,
+              "difficulty": 3,
+              "domain": "manufacturing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the root causes of surface bubbling and adhesion failure on the automotive paint line?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 75,
+              "difficulty": 3,
+              "domain": "marketing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How should we position our new enterprise software to both IT decision-makers and end users?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 70,
+              "difficulty": 3,
+              "domain": "logistics",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the cost and lead time differences between air freight and sea freight for transatlantic shipments?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 30,
+              "difficulty": 2,
+              "domain": "technology",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "Compare the serverless pricing and cold start latency of AWS Lambda and Google Cloud Functions."
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 61,
+              "difficulty": 3,
+              "domain": "finance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How have the operating costs evolved from 2023 to 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 80,
+              "difficulty": 3,
+              "domain": "energy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do lithium-ion battery systems compare to pumped hydro storage in terms of scalability and round-trip efficiency?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 22,
+              "difficulty": 3,
+              "domain": "healthcare",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How did patient readmission rates change from 2022 to 2023?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 26,
+              "difficulty": 2,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Employee satisfaction scores for the London office",
+                "Employee satisfaction scores for the Singapore office"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 58,
+              "difficulty": 2,
+              "domain": "environment",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Annual water consumption at manufacturing operations",
+                "Annual water consumption at data center operations"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 65,
+              "difficulty": 3,
+              "domain": "environment",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What has been the trend in Amazon deforestation rates from 2021 to 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 52,
+              "difficulty": 2,
+              "domain": "insurance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How did the number of flood insurance claims compare between 2023 and 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 40,
+              "difficulty": 2,
+              "domain": "aviation",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the on-time departure rate in January 2025 versus February 2025?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 8,
+              "difficulty": 1,
+              "domain": "marketing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average engagement rate for sponsored posts on Instagram targeting the 25\u201335 age group?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 78,
+              "difficulty": 3,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the coverage and throughput trade-offs between sub-6 GHz and mmWave bands for 5G deployment?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 23,
+              "difficulty": 2,
+              "domain": "legal",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the data privacy requirements in the EU?",
+                "What are the data privacy requirements in Brazil?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 73,
+              "difficulty": 3,
+              "domain": "education",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How is differentiated instruction applied in elementary school classrooms?",
+                "How is differentiated instruction applied in middle school classrooms?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 34,
+              "difficulty": 2,
+              "domain": "energy",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How did solar energy generation at our farm compare between summer 2024 and winter 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 33,
+              "difficulty": 2,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Per-hectare yields for wheat this harvest season",
+                "Per-hectare yields for corn this harvest season"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 62,
+              "difficulty": 3,
+              "domain": "healthcare",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What is the standard discharge procedure for elderly patients?",
+                "What is the standard discharge procedure for pediatric patients?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 36,
+              "difficulty": 2,
+              "domain": "public_policy",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What rent control measures are currently in place in Berlin?",
+                "What rent control measures are currently in place in New York City?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 49,
+              "difficulty": 2,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average soil nitrogen levels in soybean fields?",
+                "What are the average soil nitrogen levels in cotton fields?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 35,
+              "difficulty": 2,
+              "domain": "manufacturing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the overall defect rates for Assembly Line A this quarter?",
+                "What are the overall defect rates for Assembly Line B this quarter?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 77,
+              "difficulty": 3,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the recommended treatments for aphids in corn crops?",
+                "What are the recommended treatments for rootworm in corn crops?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 46,
+              "difficulty": 2,
+              "domain": "education",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "How many students enrolled in the fall 2024 semester",
+                "How many students enrolled in the spring 2025 semester"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 29,
+              "difficulty": 2,
+              "domain": "real_estate",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average commercial lease rates in downtown Manhattan?",
+                "What are the average commercial lease rates in the Miami financial district?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 24,
+              "difficulty": 2,
+              "domain": "engineering",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the fatigue resistance ratings for carbon steel under cyclic loading?",
+                "What are the fatigue resistance ratings for stainless steel under cyclic loading?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 32,
+              "difficulty": 2,
+              "domain": "logistics",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average delivery times for shipments to Southeast Asia?",
+                "What are the average delivery times for shipments to Western Europe?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 47,
+              "difficulty": 2,
+              "domain": "marketing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the Net Promoter Scores for the ProLine series?",
+                "What are the Net Promoter Scores for the EcoLine series?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 56,
+              "difficulty": 2,
+              "domain": "science",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the latest clinical trial results for CRISPR treatments for sickle cell disease?",
+                "What are the latest clinical trial results for CRISPR treatments for beta-thalassemia?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 21,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Returns on the S&P 500 index fund in 2025",
+                "Returns on the emerging markets fund in 2025"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 38,
+              "difficulty": 2,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average 5G download speeds in urban areas on our network?",
+                "What are the average 5G download speeds in rural areas on our network?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 25,
+              "difficulty": 2,
+              "domain": "science",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the average Arctic sea ice extent in summer 2015?",
+                "What was the average Arctic sea ice extent in summer 2020?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 60,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What is the current exposure to foreign exchange risk?",
+                "What is the current exposure to interest rate risk?",
+                "What is the current exposure to commodity price risk?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 54,
+              "difficulty": 2,
+              "domain": "public_policy",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What is the current minimum wage in France?",
+                "What is the current minimum wage in Japan?",
+                "What is the current minimum wage in Australia?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 71,
+              "difficulty": 3,
+              "domain": "public_policy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the short-term effects of the Finnish UBI pilot on employment and well-being?",
+                "What were the long-term effects of the Finnish UBI pilot on employment and well-being?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 37,
+              "difficulty": 2,
+              "domain": "retail",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What were the total online sales figures for Black Friday?",
+                "What were the total online sales figures for Cyber Monday?",
+                "What were the total online sales figures for Christmas week?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 31,
+              "difficulty": 2,
+              "domain": "environment",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the total CO2 emissions for the main campus in Q1 2026?",
+                "What were the total CO2 emissions for the main campus in Q3 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 43,
+              "difficulty": 2,
+              "domain": "energy",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What percentage of electricity comes from renewables at our Texas plants?",
+                "What percentage of electricity comes from renewables at our Ohio plants?",
+                "What percentage of electricity comes from renewables at our Oregon plants?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 51,
+              "difficulty": 2,
+              "domain": "retail",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the revenue per square foot for our East Coast stores in Q1 2026?",
+                "What was the revenue per square foot for our West Coast stores in Q1 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 44,
+              "difficulty": 2,
+              "domain": "legal",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What antitrust cases have been filed against Google from 2023 to 2026?",
+                "What antitrust cases have been filed against Apple from 2023 to 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 28,
+              "difficulty": 2,
+              "domain": "marketing",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the click-through rate for the summer campaign on Facebook?",
+                "What was the click-through rate for the summer campaign on Instagram?",
+                "What was the click-through rate for the summer campaign on Google Ads?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 50,
+              "difficulty": 2,
+              "domain": "technology",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the API uptime percentage for January 2025?",
+                "What was the API uptime percentage for February 2025?",
+                "What was the API uptime percentage for March 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 57,
+              "difficulty": 2,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "Voluntary turnover rates for engineering in 2023",
+                "Voluntary turnover rates for engineering in 2024",
+                "Voluntary turnover rates for marketing in 2023",
+                "Voluntary turnover rates for marketing in 2024"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 42,
+              "difficulty": 2,
+              "domain": "healthcare",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What are the average ER wait times at our Boston hospital?",
+                "What are the average ER wait times at our Philadelphia hospital?",
+                "What are the cardiology appointment lead times at our Boston hospital?",
+                "What are the cardiology appointment lead times at our Philadelphia hospital?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 59,
+              "difficulty": 2,
+              "domain": "real_estate",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the median home sale price in the Austin metro area in Q1 2025?",
+                "What was the median home sale price in the Austin metro area in Q2 2025?",
+                "What was the median home sale price in the Austin metro area in Q3 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 55,
+              "difficulty": 2,
+              "domain": "aviation",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What is the load factor for our New York\u2013London route?",
+                "What is the load factor for our Los Angeles\u2013Tokyo route?",
+                "What is the fuel cost per seat-mile for our New York\u2013London route?",
+                "What is the fuel cost per seat-mile for our Los Angeles\u2013Tokyo route?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 45,
+              "difficulty": 2,
+              "domain": "manufacturing",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "Overall equipment effectiveness for the Shenzhen factory in H1 2024",
+                "Overall equipment effectiveness for the Shenzhen factory in H2 2024",
+                "Overall equipment effectiveness for the Munich factory in H1 2024",
+                "Overall equipment effectiveness for the Munich factory in H2 2024"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 41,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What were the returns of the Growth Fund in Q3 2024?",
+                "What were the returns of the Growth Fund in Q4 2024?",
+                "What were the returns of the Value Fund in Q3 2024?",
+                "What were the returns of the Value Fund in Q4 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 48,
+              "difficulty": 2,
+              "domain": "logistics",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What was the daily order processing volume at the Memphis hub in March 2025?",
+                "What was the daily order processing volume at the Memphis hub in April 2025?",
+                "What was the daily order processing volume at the Rotterdam hub in March 2025?",
+                "What was the daily order processing volume at the Rotterdam hub in April 2025?"
+              ],
+              "error": null,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "model_name": "gpt-5.4",
+          "timestamp": "2026-04-13T11:33:08.243440",
+          "prompt_path": "prompts/query_contextualizer_v1_tmpl.txt",
+          "dataset_path": "datasets/query_contextualizer.json",
+          "total": 80,
+          "passed": 55,
+          "failed": 25,
+          "errors": 0,
+          "accuracy": 0.6875,
+          "by_difficulty": {
+            "1": {
+              "total": 20,
+              "passed": 20,
+              "failed": 0,
+              "errors": 0,
+              "accuracy": 1.0
+            },
+            "2": {
+              "total": 39,
+              "passed": 21,
+              "failed": 18,
+              "errors": 0,
+              "accuracy": 0.5384615384615384
+            },
+            "3": {
+              "total": 21,
+              "passed": 14,
+              "failed": 7,
+              "errors": 0,
+              "accuracy": 0.6666666666666666
+            }
+          },
+          "cases": [
+            {
+              "id": 14,
+              "difficulty": 1,
+              "domain": "energy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the capacity factor of the wind farm in Normandy?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 53,
+              "difficulty": 2,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the monthly churn rate for the Premium plan compared to the Basic plan?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 46,
+              "difficulty": 2,
+              "domain": "education",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How many students enrolled in the fall 2024 semester versus the spring 2025 semester?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 63,
+              "difficulty": 3,
+              "domain": "technology",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the main architectural differences between Kafka and RabbitMQ?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 64,
+              "difficulty": 3,
+              "domain": "legal",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do trade secrets and patents differ in terms of protection duration and disclosure requirements?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 16,
+              "difficulty": 1,
+              "domain": "public_policy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the carbon tax rate per ton of CO2 in France?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 2,
+              "difficulty": 1,
+              "domain": "healthcare",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the recommended flu vaccination schedule for adults over 65?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 74,
+              "difficulty": 3,
+              "domain": "aviation",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do EASA and FAA certification requirements differ for commercial drone operations?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 76,
+              "difficulty": 3,
+              "domain": "insurance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do flood zone classification and building age jointly affect commercial property insurance premiums?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 1,
+              "difficulty": 1,
+              "domain": "finance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the total revenue in Q3 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 65,
+              "difficulty": 3,
+              "domain": "environment",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What has been the trend in Amazon deforestation rates from 2021 to 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 52,
+              "difficulty": 2,
+              "domain": "insurance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How did the number of flood insurance claims compare between 2023 and 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 4,
+              "difficulty": 1,
+              "domain": "engineering",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the maximum rainfall intensity for a 10-year return period in Toulouse?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 17,
+              "difficulty": 1,
+              "domain": "retail",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the safety stock level for the premium wireless headphones?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 58,
+              "difficulty": 2,
+              "domain": "environment",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the annual water consumption at our manufacturing operations versus our data center operations?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 5,
+              "difficulty": 1,
+              "domain": "science",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average mutation rate of human mitochondrial DNA?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 22,
+              "difficulty": 3,
+              "domain": "healthcare",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How did patient readmission rates change between 2022 and 2023?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 18,
+              "difficulty": 1,
+              "domain": "telecommunications",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the packet loss rate on the fiber backbone between Paris and Marseille?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 3,
+              "difficulty": 1,
+              "domain": "legal",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the statute of limitations for breach of contract in California?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 9,
+              "difficulty": 1,
+              "domain": "real_estate",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average rental yield for residential properties in Lyon?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 66,
+              "difficulty": 3,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What does the onboarding process look like for sales and customer success new hires?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 10,
+              "difficulty": 1,
+              "domain": "technology",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the recommended steps for migrating a MySQL database to PostgreSQL?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 69,
+              "difficulty": 3,
+              "domain": "engineering",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the thermal conductivity and fire resistance ratings of ceramic fiber insulation?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 13,
+              "difficulty": 1,
+              "domain": "agriculture",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the optimal irrigation frequency for winter wheat during the tillering stage?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 34,
+              "difficulty": 2,
+              "domain": "energy",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How did solar energy generation at our farm compare between summer 2024 and winter 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 68,
+              "difficulty": 3,
+              "domain": "retail",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do product return rates typically compare between the summer and winter seasons?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 12,
+              "difficulty": 1,
+              "domain": "logistics",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the current lead time for ocean freight from Shanghai to Rotterdam?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 6,
+              "difficulty": 1,
+              "domain": "HR",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the parental leave entitlement for employees in the French office?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 7,
+              "difficulty": 1,
+              "domain": "education",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How many students graduated from the computer science program in 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 40,
+              "difficulty": 2,
+              "domain": "aviation",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the on-time departure rate in January 2025 versus February 2025?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 8,
+              "difficulty": 1,
+              "domain": "marketing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average engagement rate for sponsored Instagram posts targeting the 25\u201335 age group?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 35,
+              "difficulty": 2,
+              "domain": "manufacturing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the overall defect rates for Assembly Line A in Q2 2026?",
+                "What are the overall defect rates for Assembly Line B in Q2 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 71,
+              "difficulty": 3,
+              "domain": "public_policy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What were the short-term and long-term effects of the Finnish universal basic income pilot on employment and well-being?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 67,
+              "difficulty": 3,
+              "domain": "science",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the known interactions between metformin and ibuprofen?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 24,
+              "difficulty": 2,
+              "domain": "engineering",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the fatigue resistance ratings for carbon steel and stainless steel for structural bridge beams under cyclic loading?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 49,
+              "difficulty": 2,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the average soil nitrogen levels in our soybean fields versus our cotton fields?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 60,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 3,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the current exposure to foreign exchange risk, interest rate risk, and commodity price risk?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 61,
+              "difficulty": 3,
+              "domain": "finance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How have operating costs evolved from 2024 to 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 50,
+              "difficulty": 2,
+              "domain": "technology",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the API uptime percentage for January 2025?",
+                "What was the API uptime percentage for February 2025?",
+                "What was the API uptime percentage for March 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 26,
+              "difficulty": 2,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "Employee satisfaction scores for the London office",
+                "Employee satisfaction scores for the Singapore office"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 51,
+              "difficulty": 2,
+              "domain": "retail",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the revenue per square foot for East Coast stores versus West Coast stores in Q1 2026?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 78,
+              "difficulty": 3,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the coverage and throughput trade-offs between sub-6 GHz and mmWave bands for 5G deployment?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 27,
+              "difficulty": 2,
+              "domain": "education",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the student outcome results for project-based learning compared with traditional lecture-based instruction?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 38,
+              "difficulty": 2,
+              "domain": "telecommunications",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the average 5G download speeds in urban areas versus rural areas on our network?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 72,
+              "difficulty": 3,
+              "domain": "manufacturing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the root causes of surface bubbling and adhesion failure on the automotive paint line?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 70,
+              "difficulty": 3,
+              "domain": "logistics",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What are the cost and lead time differences between air freight and sea freight for transatlantic shipments?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 62,
+              "difficulty": 3,
+              "domain": "healthcare",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the standard discharge procedure for elderly patients versus pediatric patients?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 30,
+              "difficulty": 2,
+              "domain": "technology",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "Compare the serverless pricing and cold start latency of AWS Lambda and Google Cloud Functions."
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 77,
+              "difficulty": 3,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the recommended treatments for aphids in corn crops?",
+                "What are the recommended treatments for rootworm in corn crops?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 21,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the returns on the S&P 500 index fund in 2025?",
+                "What were the returns on the emerging markets fund in 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 33,
+              "difficulty": 2,
+              "domain": "agriculture",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the per-hectare yields for wheat this harvest season?",
+                "What were the per-hectare yields for corn this harvest season?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 73,
+              "difficulty": 3,
+              "domain": "education",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How is differentiated instruction applied in elementary and middle school classrooms?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 75,
+              "difficulty": 3,
+              "domain": "marketing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How should a new enterprise software product be positioned to both IT decision-makers and end users?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 29,
+              "difficulty": 2,
+              "domain": "real_estate",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average commercial lease rates in downtown Manhattan?",
+                "What are the average commercial lease rates in the Miami financial district?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 15,
+              "difficulty": 1,
+              "domain": "manufacturing",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the rework procedure for solder joint failures on Line C?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 11,
+              "difficulty": 1,
+              "domain": "environment",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What was the total energy consumption of the Paris headquarters in 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 36,
+              "difficulty": 2,
+              "domain": "public_policy",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What rent control measures are currently in place in Berlin?",
+                "What rent control measures are currently in place in New York City?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 31,
+              "difficulty": 2,
+              "domain": "environment",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What were the total CO2 emissions for the main campus in Q1 2026?",
+                "What were the total CO2 emissions for the main campus in Q3 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 47,
+              "difficulty": 2,
+              "domain": "marketing",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the Net Promoter Scores for the ProLine series?",
+                "What are the Net Promoter Scores for the EcoLine series?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 55,
+              "difficulty": 2,
+              "domain": "aviation",
+              "n_expected_queries": 4,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the load factor and fuel cost per seat-mile for the New York\u2013London route?",
+                "What are the load factor and fuel cost per seat-mile for the Los Angeles\u2013Tokyo route?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 37,
+              "difficulty": 2,
+              "domain": "retail",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What were the total online sales figures for Black Friday?",
+                "What were the total online sales figures for Cyber Monday?",
+                "What were the total online sales figures for Christmas week?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 79,
+              "difficulty": 3,
+              "domain": "real_estate",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do rising interest rates and increasing housing supply together affect residential property investment returns?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 23,
+              "difficulty": 2,
+              "domain": "legal",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the data privacy requirements in the EU?",
+                "What are the data privacy requirements in Brazil?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 56,
+              "difficulty": 2,
+              "domain": "science",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the latest clinical trial results for CRISPR treatments for sickle cell disease?",
+                "What are the latest clinical trial results for CRISPR treatments for beta-thalassemia?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 54,
+              "difficulty": 2,
+              "domain": "public_policy",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What is the current minimum wage in France?",
+                "What is the current minimum wage in Japan?",
+                "What is the current minimum wage in Australia?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 25,
+              "difficulty": 2,
+              "domain": "science",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What was the average Arctic sea ice extent in summer 2015?",
+                "What was the average Arctic sea ice extent in summer 2020?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 32,
+              "difficulty": 2,
+              "domain": "logistics",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average delivery times for shipments to Southeast Asia?",
+                "What are the average delivery times for shipments to Western Europe?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 45,
+              "difficulty": 2,
+              "domain": "manufacturing",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What was the overall equipment effectiveness for the Shenzhen factory in H1 2024?",
+                "What was the overall equipment effectiveness for the Shenzhen factory in H2 2024?",
+                "What was the overall equipment effectiveness for the Munich factory in H1 2024?",
+                "What was the overall equipment effectiveness for the Munich factory in H2 2024?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 57,
+              "difficulty": 2,
+              "domain": "HR",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What were the voluntary turnover rates for engineering in 2023?",
+                "What were the voluntary turnover rates for engineering in 2024?",
+                "What were the voluntary turnover rates for marketing in 2023?",
+                "What were the voluntary turnover rates for marketing in 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 28,
+              "difficulty": 2,
+              "domain": "marketing",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the click-through rate for the summer campaign on Facebook?",
+                "What was the click-through rate for the summer campaign on Instagram?",
+                "What was the click-through rate for the summer campaign on Google Ads?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 44,
+              "difficulty": 2,
+              "domain": "legal",
+              "n_expected_queries": 2,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What antitrust cases have been filed against Google in the tech sector from 2023 to 2026?",
+                "What antitrust cases have been filed against Apple in the tech sector from 2023 to 2026?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 41,
+              "difficulty": 2,
+              "domain": "finance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What were the returns of the Growth Fund in Q3 2024?",
+                "What were the returns of the Growth Fund in Q4 2024?",
+                "What were the returns of the Value Fund in Q3 2024?",
+                "What were the returns of the Value Fund in Q4 2024?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 59,
+              "difficulty": 2,
+              "domain": "real_estate",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What was the median home sale price in the Austin metro area in Q1 2025?",
+                "What was the median home sale price in the Austin metro area in Q2 2025?",
+                "What was the median home sale price in the Austin metro area in Q3 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 48,
+              "difficulty": 2,
+              "domain": "logistics",
+              "n_expected_queries": 4,
+              "n_generated_queries": 4,
+              "generated_queries": [
+                "What was the daily order processing volume at the Memphis hub in March 2025?",
+                "What was the daily order processing volume at the Memphis hub in April 2025?",
+                "What was the daily order processing volume at the Rotterdam hub in March 2025?",
+                "What was the daily order processing volume at the Rotterdam hub in April 2025?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 42,
+              "difficulty": 2,
+              "domain": "healthcare",
+              "n_expected_queries": 4,
+              "n_generated_queries": 2,
+              "generated_queries": [
+                "What are the average emergency room wait times and cardiology appointment lead times at the Boston hospital?",
+                "What are the average emergency room wait times and cardiology appointment lead times at the Philadelphia hospital?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 80,
+              "difficulty": 3,
+              "domain": "energy",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "How do lithium-ion battery systems compare to pumped hydro storage in terms of scalability and round-trip efficiency?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 39,
+              "difficulty": 2,
+              "domain": "insurance",
+              "n_expected_queries": 2,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the average claim resolution time for auto insurance claims compared with home insurance claims?"
+              ],
+              "error": null,
+              "pass": false
+            },
+            {
+              "id": 43,
+              "difficulty": 2,
+              "domain": "energy",
+              "n_expected_queries": 3,
+              "n_generated_queries": 3,
+              "generated_queries": [
+                "What percentage of electricity comes from renewables at the Texas plant?",
+                "What percentage of electricity comes from renewables at the Ohio plant?",
+                "What percentage of electricity comes from renewables at the Oregon plant?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 19,
+              "difficulty": 1,
+              "domain": "insurance",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "What is the loss ratio for the commercial property line?"
+              ],
+              "error": null,
+              "pass": true
+            },
+            {
+              "id": 20,
+              "difficulty": 1,
+              "domain": "aviation",
+              "n_expected_queries": 1,
+              "n_generated_queries": 1,
+              "generated_queries": [
+                "When is the next C-check due for aircraft registration F-GKXA?"
+              ],
+              "error": null,
+              "pass": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

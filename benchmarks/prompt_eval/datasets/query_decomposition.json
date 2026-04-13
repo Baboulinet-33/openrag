@@ -1,0 +1,802 @@
+[
+  {
+    "id": 1,
+    "difficulty": 1,
+    "domain": "finance",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What was our total revenue in Q3 2024?"}
+    ]
+  },
+  {
+    "id": 2,
+    "difficulty": 1,
+    "domain": "healthcare",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the recommended flu vaccination schedule for adults over 65?"}
+    ]
+  },
+  {
+    "id": 3,
+    "difficulty": 1,
+    "domain": "legal",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the statute of limitations for breach of contract in California?"}
+    ]
+  },
+  {
+    "id": 4,
+    "difficulty": 1,
+    "domain": "engineering",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the maximum rainfall intensity for a 10-year return period in Toulouse?"}
+    ]
+  },
+  {
+    "id": 5,
+    "difficulty": 1,
+    "domain": "science",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the average mutation rate of human mitochondrial DNA?"}
+    ]
+  },
+  {
+    "id": 6,
+    "difficulty": 1,
+    "domain": "HR",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the parental leave entitlement for employees in our French office?"}
+    ]
+  },
+  {
+    "id": 7,
+    "difficulty": 1,
+    "domain": "education",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "How many students graduated from the computer science program last year?"}
+    ]
+  },
+  {
+    "id": 8,
+    "difficulty": 1,
+    "domain": "marketing",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the average engagement rate for sponsored posts on Instagram targeting the 25–35 age group?"}
+    ]
+  },
+  {
+    "id": 9,
+    "difficulty": 1,
+    "domain": "real_estate",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the average rental yield for residential properties in Lyon?"}
+    ]
+  },
+  {
+    "id": 10,
+    "difficulty": 1,
+    "domain": "technology",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What are the recommended steps for migrating a MySQL database to PostgreSQL?"}
+    ]
+  },
+  {
+    "id": 11,
+    "difficulty": 1,
+    "domain": "environment",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What was the total energy consumption of our Paris headquarters in 2024?"}
+    ]
+  },
+  {
+    "id": 12,
+    "difficulty": 1,
+    "domain": "logistics",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the current lead time for ocean freight from Shanghai to Rotterdam?"}
+    ]
+  },
+  {
+    "id": 13,
+    "difficulty": 1,
+    "domain": "agriculture",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the optimal irrigation frequency for winter wheat during the tillering stage?"}
+    ]
+  },
+  {
+    "id": 14,
+    "difficulty": 1,
+    "domain": "energy",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the capacity factor of our wind farm in Normandy?"}
+    ]
+  },
+  {
+    "id": 15,
+    "difficulty": 1,
+    "domain": "manufacturing",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "A batch on Line C just failed solder joint inspection. What is the acceptable defect threshold for that line?"},
+      {"role": "assistant", "content": "Based on the Line C quality standards document, the acceptable defect threshold for solder joint inspections is 0.5% of joints per batch. Batches exceeding this rate are quarantined for rework."},
+      {"role": "user", "content": "What is the rework procedure for solder joint failures on Line C?"}
+    ]
+  },
+  {
+    "id": 16,
+    "difficulty": 1,
+    "domain": "public_policy",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the carbon tax rate per ton of CO2 in France?"}
+    ]
+  },
+  {
+    "id": 17,
+    "difficulty": 1,
+    "domain": "retail",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the safety stock level for the premium wireless headphones?"}
+    ]
+  },
+  {
+    "id": 18,
+    "difficulty": 1,
+    "domain": "telecommunications",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "What is the packet loss rate on our fiber backbone between Paris and Marseille?"}
+    ]
+  },
+  {
+    "id": 19,
+    "difficulty": 1,
+    "domain": "insurance",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "Our gross written premium grew significantly last year. What drove that growth?"},
+      {"role": "assistant", "content": "According to the annual report, GWP growth was primarily driven by a 18% increase in commercial property lines and expansion into the SME segment, which added approximately €42M in new premiums."},
+      {"role": "user", "content": "What is the loss ratio for our commercial property line?"}
+    ]
+  },
+  {
+    "id": 20,
+    "difficulty": 1,
+    "domain": "aviation",
+    "n_expected_queries": 1,
+    "messages": [
+      {"role": "user", "content": "When is the next C-check due for aircraft registration F-GKXA?"}
+    ]
+  },
+  {
+    "id": 21,
+    "difficulty": 2,
+    "domain": "finance",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "What were the returns on the S&P 500 index fund and the emerging markets fund last year?"}
+    ]
+  },
+  {
+    "id": 22,
+    "difficulty": 3,
+    "domain": "healthcare",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Asks for the delta between two named years — a change/trend question semantically equivalent to 'how did X evolve', not two independent per-year lookups.",
+    "messages": [
+      {"role": "user", "content": "How did patient readmission rates change between 2022 and 2023?"}
+    ]
+  },
+  {
+    "id": 23,
+    "difficulty": 2,
+    "domain": "legal",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What are the data privacy requirements in the EU and in Brazil?"}
+    ]
+  },
+  {
+    "id": 24,
+    "difficulty": 2,
+    "domain": "engineering",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "We're choosing between carbon steel and stainless steel for structural beams on a bridge project."},
+      {"role": "assistant", "content": "Both are viable options. Carbon steel offers higher tensile strength at lower cost, while stainless steel provides better corrosion resistance and longer service life in aggressive environments. The choice typically depends on the exposure conditions and lifecycle cost targets."},
+      {"role": "user", "content": "What are the fatigue resistance ratings for carbon steel and stainless steel under cyclic loading?"}
+    ]
+  },
+  {
+    "id": 25,
+    "difficulty": 2,
+    "domain": "science",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "What was the average Arctic sea ice extent in summer 2015 and summer 2020?"}
+    ]
+  },
+  {
+    "id": 26,
+    "difficulty": 2,
+    "domain": "HR",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What are the employee satisfaction scores for our London office and our Singapore office?"}
+    ]
+  },
+  {
+    "id": 27,
+    "difficulty": 2,
+    "domain": "education",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "What are the student outcome results for project-based learning versus traditional lecture-based instruction?"}
+    ]
+  },
+  {
+    "id": 28,
+    "difficulty": 2,
+    "domain": "marketing",
+    "n_expected_queries": 3,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What was the click-through rate for our summer campaign on Facebook, Instagram, and Google Ads?"}
+    ]
+  },
+  {
+    "id": 29,
+    "difficulty": 2,
+    "domain": "real_estate",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What are the average commercial lease rates in downtown Manhattan and in the Miami financial district?"}
+    ]
+  },
+  {
+    "id": 30,
+    "difficulty": 2,
+    "domain": "technology",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "Compare the serverless pricing and cold start latency of AWS Lambda and Google Cloud Functions."}
+    ]
+  },
+  {
+    "id": 31,
+    "difficulty": 2,
+    "domain": "environment",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "Our sustainability report shows a reduction in total emissions this year. Which quarter drove the biggest drop?"},
+      {"role": "assistant", "content": "According to the emissions tracking data, Q3 showed the largest reduction, down 14% versus the prior year, mainly due to the switch to renewable energy at the main manufacturing facility in July."},
+      {"role": "user", "content": "What were the total CO2 emissions for the main campus in Q1 and Q3 of this year?"}
+    ]
+  },
+  {
+    "id": 32,
+    "difficulty": 2,
+    "domain": "logistics",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What are the average delivery times for shipments to Southeast Asia and to Western Europe?"}
+    ]
+  },
+  {
+    "id": 33,
+    "difficulty": 2,
+    "domain": "agriculture",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "What were the per-hectare yields for wheat and corn this harvest season?"}
+    ]
+  },
+  {
+    "id": 34,
+    "difficulty": 2,
+    "domain": "energy",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "How did solar energy generation at our farm compare between summer 2024 and winter 2024?"}
+    ]
+  },
+  {
+    "id": 35,
+    "difficulty": 2,
+    "domain": "manufacturing",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "What are the overall defect rates for Assembly Line A and Assembly Line B this quarter?"}
+    ]
+  },
+  {
+    "id": 36,
+    "difficulty": 2,
+    "domain": "public_policy",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What rent control measures are currently in place in Berlin and in New York City?"}
+    ]
+  },
+  {
+    "id": 37,
+    "difficulty": 2,
+    "domain": "retail",
+    "n_expected_queries": 3,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "What were total online sales figures for Black Friday, Cyber Monday, and Christmas week?"}
+    ]
+  },
+  {
+    "id": 38,
+    "difficulty": 2,
+    "domain": "telecommunications",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What are the average 5G download speeds in urban areas versus rural areas on our network?"}
+    ]
+  },
+  {
+    "id": 39,
+    "difficulty": 2,
+    "domain": "insurance",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "What is the average claim resolution time for auto insurance versus home insurance claims?"}
+    ]
+  },
+  {
+    "id": 40,
+    "difficulty": 2,
+    "domain": "aviation",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "What was our on-time departure rate in January 2025 versus February 2025?"}
+    ]
+  },
+  {
+    "id": 41,
+    "difficulty": 2,
+    "domain": "finance",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "What were the returns of the Growth Fund and the Value Fund in Q3 and Q4 of 2024?"}
+    ]
+  },
+  {
+    "id": 42,
+    "difficulty": 2,
+    "domain": "healthcare",
+    "n_expected_queries": 4,
+    "decomposition_varieties": ["distinct_entities", "unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What are the average ER wait times and cardiology appointment lead times at our Boston and Philadelphia hospitals?"}
+    ]
+  },
+  {
+    "id": 43,
+    "difficulty": 2,
+    "domain": "energy",
+    "n_expected_queries": 3,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What percentage of electricity comes from renewables at our Texas, Ohio, and Oregon plants?"}
+    ]
+  },
+  {
+    "id": 44,
+    "difficulty": 2,
+    "domain": "legal",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "We're seeing a lot of antitrust activity in the tech sector lately."},
+      {"role": "assistant", "content": "That's correct. The past three years have seen a significant uptick in enforcement actions, particularly targeting large platform companies in the EU and the US. The EU's Digital Markets Act has been a major driver of new cases."},
+      {"role": "user", "content": "What antitrust cases have been filed against Google and Apple in the last three years?"}
+    ]
+  },
+  {
+    "id": 45,
+    "difficulty": 2,
+    "domain": "manufacturing",
+    "n_expected_queries": 4,
+    "decomposition_varieties": ["distinct_entities", "time_period"],
+    "messages": [
+      {"role": "user", "content": "What was the overall equipment effectiveness for the Shenzhen factory and the Munich factory in H1 and H2 of 2024?"}
+    ]
+  },
+  {
+    "id": 46,
+    "difficulty": 2,
+    "domain": "education",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "How many students enrolled in the fall 2024 semester versus the spring 2025 semester?"}
+    ]
+  },
+  {
+    "id": 47,
+    "difficulty": 2,
+    "domain": "marketing",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "What are the Net Promoter Scores for the ProLine series and the EcoLine series?"}
+    ]
+  },
+  {
+    "id": 48,
+    "difficulty": 2,
+    "domain": "logistics",
+    "n_expected_queries": 4,
+    "decomposition_varieties": ["time_period", "unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What was the daily order processing volume at our Memphis hub and our Rotterdam hub in March and April 2025?"}
+    ]
+  },
+  {
+    "id": 49,
+    "difficulty": 2,
+    "domain": "agriculture",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "What are the average soil nitrogen levels in our soybean fields versus our cotton fields?"}
+    ]
+  },
+  {
+    "id": 50,
+    "difficulty": 2,
+    "domain": "technology",
+    "n_expected_queries": 3,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "Our SLA targets uptime above 99.9%. Did we meet that in Q1 2025?"},
+      {"role": "assistant", "content": "In Q1 2025, overall API uptime averaged 99.87%, which fell slightly below the 99.9% SLA target. January was the weakest month at 99.71% due to a storage incident on January 14th."},
+      {"role": "user", "content": "What was the API uptime percentage for January, February, and March 2025?"}
+    ]
+  },
+  {
+    "id": 51,
+    "difficulty": 2,
+    "domain": "retail",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What was the revenue per square foot for our East Coast stores versus our West Coast stores last quarter?"}
+    ]
+  },
+  {
+    "id": 52,
+    "difficulty": 2,
+    "domain": "insurance",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "How did the number of flood insurance claims compare between 2023 and 2024?"}
+    ]
+  },
+  {
+    "id": 53,
+    "difficulty": 2,
+    "domain": "telecommunications",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "What is the monthly churn rate for our Premium plan compared to our Basic plan?"}
+    ]
+  },
+  {
+    "id": 54,
+    "difficulty": 2,
+    "domain": "public_policy",
+    "n_expected_queries": 3,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What is the current minimum wage in France, Japan, and Australia?"}
+    ]
+  },
+  {
+    "id": 55,
+    "difficulty": 2,
+    "domain": "aviation",
+    "n_expected_queries": 4,
+    "decomposition_varieties": ["distinct_entities", "unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What are the load factor and fuel cost per seat-mile for our New York–London and Los Angeles–Tokyo routes?"}
+    ]
+  },
+  {
+    "id": 56,
+    "difficulty": 2,
+    "domain": "science",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["distinct_entities"],
+    "messages": [
+      {"role": "user", "content": "CRISPR therapies have been advancing fast recently."},
+      {"role": "assistant", "content": "Yes, 2023 and 2024 saw major milestones. The FDA approved the first CRISPR-based therapy for sickle cell disease in December 2023, and several beta-thalassemia trials reported highly promising results around the same period."},
+      {"role": "user", "content": "What are the latest clinical trial results for CRISPR treatments for sickle cell disease and for beta-thalassemia?"}
+    ]
+  },
+  {
+    "id": 57,
+    "difficulty": 2,
+    "domain": "HR",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "What were the voluntary turnover rates for engineering and marketing in 2023 and 2024?"}
+    ]
+  },
+  {
+    "id": 58,
+    "difficulty": 2,
+    "domain": "environment",
+    "n_expected_queries": 2,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What is the annual water consumption at our manufacturing operations versus our data center operations?"}
+    ]
+  },
+  {
+    "id": 59,
+    "difficulty": 2,
+    "domain": "real_estate",
+    "n_expected_queries": 3,
+    "decomposition_varieties": ["time_period"],
+    "messages": [
+      {"role": "user", "content": "What was the median home sale price in the Austin metro area in Q1, Q2, and Q3 of 2025?"}
+    ]
+  },
+  {
+    "id": 60,
+    "difficulty": 2,
+    "domain": "finance",
+    "n_expected_queries": 3,
+    "decomposition_varieties": ["unrelated_dimensions"],
+    "messages": [
+      {"role": "user", "content": "What is our current exposure to foreign exchange risk, interest rate risk, and commodity price risk?"}
+    ]
+  },
+  {
+    "id": 61,
+    "difficulty": 3,
+    "domain": "finance",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Asks for an evolution trend over two years — this is a single continuous question, not two independent lookups per year.",
+    "messages": [
+      {"role": "user", "content": "How have our operating costs evolved over the past two years?"}
+    ]
+  },
+  {
+    "id": 62,
+    "difficulty": 3,
+    "domain": "healthcare",
+    "n_expected_queries": 2,
+    "ambiguity_reason": "Two patient groups follow distinct clinical protocols typically documented separately — separate retrieval per group is needed despite the comparative framing.",
+    "messages": [
+      {"role": "user", "content": "What is the standard discharge procedure for elderly patients versus pediatric patients?"}
+    ]
+  },
+  {
+    "id": 63,
+    "difficulty": 3,
+    "domain": "technology",
+    "n_expected_queries": 2,
+    "ambiguity_reason": "Two distinct systems each with independent documentation — a comparison query still requires two separate retrievals to gather the source material.",
+    "messages": [
+      {"role": "user", "content": "What are the main architectural differences between Kafka and RabbitMQ?"}
+    ]
+  },
+  {
+    "id": 64,
+    "difficulty": 3,
+    "domain": "legal",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two legal concepts mentioned but the question is about their interaction — a relational question that is semantically one unit.",
+    "messages": [
+      {"role": "user", "content": "We're advising a client on whether to patent their process or keep it as a trade secret."},
+      {"role": "assistant", "content": "That's a common strategic decision. Patents offer time-limited exclusive rights in exchange for public disclosure, while trade secrets provide indefinite protection as long as the information stays confidential. The right choice depends on how easily the process could be reverse-engineered and how long the competitive advantage needs to last."},
+      {"role": "user", "content": "How do trade secrets and patents differ in terms of protection duration and disclosure requirements?"}
+    ]
+  },
+  {
+    "id": 65,
+    "difficulty": 3,
+    "domain": "environment",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Covers a multi-year span but asks for a single trend — a continuous phenomenon, not distinct data points per year.",
+    "messages": [
+      {"role": "user", "content": "What has been the trend in Amazon deforestation rates over the last five years?"}
+    ]
+  },
+  {
+    "id": 66,
+    "difficulty": 3,
+    "domain": "HR",
+    "n_expected_queries": 2,
+    "ambiguity_reason": "Sales and customer success have distinct onboarding processes typically documented separately — one retrieval per department is needed despite the shared framing.",
+    "messages": [
+      {"role": "user", "content": "What does the onboarding process look like for sales and customer success new hires?"}
+    ]
+  },
+  {
+    "id": 67,
+    "difficulty": 3,
+    "domain": "science",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two substances but the question is about their interaction as a combined effect — splitting fragments a question that only makes sense as a whole.",
+    "messages": [
+      {"role": "user", "content": "What are the known interactions between metformin and ibuprofen?"}
+    ]
+  },
+  {
+    "id": 68,
+    "difficulty": 3,
+    "domain": "retail",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two seasons referenced but the question asks for a typical pattern — a trend question, not two independent data lookups.",
+    "messages": [
+      {"role": "user", "content": "Our return rates seem to spike at certain times of year."},
+      {"role": "assistant", "content": "That's a common pattern in retail. Return rates typically peak in January following holiday gift purchases, and can also rise after summer sales events. The average return rate across categories runs about 18% in January versus 9% in summer months based on industry benchmarks."},
+      {"role": "user", "content": "How do product return rates typically compare between the summer and winter seasons?"}
+    ]
+  },
+  {
+    "id": 69,
+    "difficulty": 3,
+    "domain": "engineering",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two properties asked for one material — a multi-attribute lookup for a single subject, not two independent searches.",
+    "messages": [
+      {"role": "user", "content": "What are the thermal conductivity and fire resistance ratings of ceramic fiber insulation?"}
+    ]
+  },
+  {
+    "id": 70,
+    "difficulty": 3,
+    "domain": "logistics",
+    "n_expected_queries": 2,
+    "ambiguity_reason": "Air and sea freight are separate logistics categories with distinct documentation — cost and lead time for each require independent retrieval despite the comparative framing.",
+    "messages": [
+      {"role": "user", "content": "What are the cost and lead time differences between air freight and sea freight for transatlantic shipments?"}
+    ]
+  },
+  {
+    "id": 71,
+    "difficulty": 3,
+    "domain": "public_policy",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Short-term and long-term effects of one policy are part of one coherent question, not two independent retrievals.",
+    "messages": [
+      {"role": "user", "content": "What were the short-term and long-term effects of the Finnish UBI pilot on employment and well-being?"}
+    ]
+  },
+  {
+    "id": 72,
+    "difficulty": 3,
+    "domain": "manufacturing",
+    "n_expected_queries": 2,
+    "ambiguity_reason": "Surface bubbling and adhesion failure are distinct failure modes with separate root cause analyses in QA documentation — each requires its own retrieval.",
+    "messages": [
+      {"role": "user", "content": "What are the root causes of surface bubbling and adhesion failure on the automotive paint line?"}
+    ]
+  },
+  {
+    "id": 73,
+    "difficulty": 3,
+    "domain": "education",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two grade levels but the question is about a pedagogical approach in general — not a data query per grade level.",
+    "messages": [
+      {"role": "user", "content": "How is differentiated instruction applied in elementary and middle school classrooms?"}
+    ]
+  },
+  {
+    "id": 74,
+    "difficulty": 3,
+    "domain": "aviation",
+    "n_expected_queries": 2,
+    "ambiguity_reason": "EASA and FAA are independent regulatory bodies with entirely separate frameworks — one retrieval per agency is needed even though the question asks for a comparison.",
+    "messages": [
+      {"role": "user", "content": "We're pursuing certification on both sides of the Atlantic for our new drone."},
+      {"role": "assistant", "content": "Dual certification under EASA and FAA is common for commercial operators targeting international markets. The processes share some technical standards but differ significantly in procedural requirements and approval timelines, with FAA typically faster for initial approvals."},
+      {"role": "user", "content": "How do EASA and FAA certification requirements differ for commercial drone operations?"}
+    ]
+  },
+  {
+    "id": 75,
+    "difficulty": 3,
+    "domain": "marketing",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two audience segments but the question is about positioning strategy for both at once — a single strategic question.",
+    "messages": [
+      {"role": "user", "content": "How should we position our new enterprise software to both IT decision-makers and end users?"}
+    ]
+  },
+  {
+    "id": 76,
+    "difficulty": 3,
+    "domain": "insurance",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two risk factors but the question asks how they jointly affect a premium — a combined underwriting question, semantically one unit.",
+    "messages": [
+      {"role": "user", "content": "How do flood zone classification and building age jointly affect commercial property insurance premiums?"}
+    ]
+  },
+  {
+    "id": 77,
+    "difficulty": 3,
+    "domain": "agriculture",
+    "n_expected_queries": 2,
+    "ambiguity_reason": "Aphids and rootworm are distinct pests with separate treatment protocols in agronomic documentation — independent retrieval per pest is needed despite the shared crop context.",
+    "messages": [
+      {"role": "user", "content": "What are the recommended treatments for aphids and rootworm in corn crops?"}
+    ]
+  },
+  {
+    "id": 78,
+    "difficulty": 3,
+    "domain": "telecommunications",
+    "n_expected_queries": 2,
+    "ambiguity_reason": "Sub-6 GHz and mmWave are distinct frequency bands with separate technical specifications — one retrieval per band is needed even though the question asks for a unified comparison.",
+    "messages": [
+      {"role": "user", "content": "What are the coverage and throughput trade-offs between sub-6 GHz and mmWave bands for 5G deployment?"}
+    ]
+  },
+  {
+    "id": 79,
+    "difficulty": 3,
+    "domain": "real_estate",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two market conditions but the question asks how they interact to affect returns — a holistic investment strategy question.",
+    "messages": [
+      {"role": "user", "content": "How do rising interest rates and increasing housing supply together affect residential property investment returns?"}
+    ]
+  },
+  {
+    "id": 80,
+    "difficulty": 3,
+    "domain": "energy",
+    "n_expected_queries": 1,
+    "ambiguity_reason": "Two storage technologies compared in a single decision context — a comparison question is one semantic unit, not two independent lookups.",
+    "messages": [
+      {"role": "user", "content": "How do lithium-ion battery systems compare to pumped hydro storage in terms of scalability and round-trip efficiency?"}
+    ]
+  }
+]
