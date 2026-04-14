@@ -34,13 +34,43 @@ class RAGMODE(Enum):
     CHATBOTRAG = "ChatBotRag"
 
 
-class SearchQueries(BaseModel):
-    """Search queries for semantic retrieval."""
+class Query(BaseModel):
+    """A single vector database search query with an optional Milvus `created_at` filter.
 
-    query_list: list[str] = Field(..., description="Search sub-queries to retrieve relevant documents.")
+    Set `filter` only when the user restricts by **when the document was created** —
+    not when the date describes what the document is *about*.
+
+    NO filter — date is a content topic:
+      "Sales figures in 2023"          → 2023 is the reporting period.
+      "Q3 2024 financial results"      → Q3 2024 is the document subject.
+
+    YES filter — date constrains the document index:
+      "Last month's client meeting"    → created_at covers last month.
+      "Latest safety bulletin"         → created_at for most recent docs.
+      "Report published this week"     → created_at covers this week.
+
+    Syntax: created_at <op> ISO "YYYY-MM-DDTHH:MM:SS+00:00"  (operators: ==,!=,>,<,>=,<=,AND,OR,NOT)
+    Example: created_at >= ISO "2024-05-01T00:00:00+00:00" AND created_at <= ISO "2024-05-31T23:59:59+00:00"
+    """
+
+    query: str = Field(description="A semantically enriched, descriptive query for vector similarity search.")
+    filter: str | None = Field(
+        default=None,
+        description=(
+            "Milvus filter on `created_at` — set ONLY when the user restricts by document creation date."
+            ' Format: created_at <op> ISO "YYYY-MM-DDTHH:MM:SS+00:00". Null when date refers to content topic.'
+        ),
+    )
 
     def __str__(self) -> str:
-        return " -- ".join(f"Query: {q}" for q in self.query_list)
+        return f"Query: {self.query}, Filter: {self.filter}"
+
+
+class SearchQueries(BaseModel):
+    query_list: list[Query] = Field(..., description="Search sub-queries to retrieve relevant documents.")
+
+    def __str__(self) -> str:
+        return " --- ".join(str(q) for q in self.query_list)
 
 
 class RetrieverPipeline:
@@ -57,20 +87,20 @@ class RetrieverPipeline:
     async def retrieve_docs(
         self,
         partition: list[str],
-        query: str,
+        query: Query,
         top_k: int | None = None,
         filter: str | None = None,
         filter_params: dict | None = None,
     ) -> list[Document]:
         docs = await self.retriever.retrieve(
-            partition=partition, query=query, filter=filter, filter_params=filter_params
+            partition=partition, query=query.query, filter=query.filter, filter_params=None
         )
         logger.debug("Documents retreived", document_count=len(docs))
 
         if docs:
             # 1. rerank all the docs
             if self.reranker_enabled:
-                docs = await self.reranker.rerank(query=query, documents=docs, top_k=None)
+                docs = await self.reranker.rerank(query=query.query, documents=docs, top_k=None)
                 logger.debug("Documents reranked", document_count=len(docs))
 
             # 2. expand the docs with related documents
@@ -89,7 +119,7 @@ class RetrieverPipeline:
 
                 # rerank again after expansion if reranker is enabled
                 if self.reranker_enabled:
-                    docs = await self.reranker.rerank(query=query, documents=docs, top_k=None)
+                    docs = await self.reranker.rerank(query=query.query, documents=docs, top_k=None)
                     logger.debug("Documents after expansion and reranking", document_count=len(docs))
 
         return docs
@@ -149,7 +179,7 @@ class RagPipeline:
             case RAGMODE.SIMPLERAG:
                 # For SimpleRag, we don't need to contextualize the query as the chat history is not taken into account
                 last_msg = messages[-1]
-                return SearchQueries(query_list=[last_msg["content"]])
+                return SearchQueries(query_list=[Query(query=last_msg["content"])])
 
             case RAGMODE.CHATBOTRAG:
                 # Contextualize the query based on the chat history
@@ -165,7 +195,7 @@ class RagPipeline:
                 }
                 prompt = QUERY_CONTEXTUALIZER_PROMPT.format(
                     query_language=query_language,
-                    current_date=datetime.now().strftime("%Y-%m-%d"),
+                    current_date=datetime.now().strftime("%A, %B %d, %Y"),
                 )
 
                 messages = [
@@ -271,7 +301,7 @@ class RagPipeline:
             return payload, [], []
 
         if use_map_reduce and docs:
-            docs = await self.map_reduce.map(query=" ".join(queries.query_list), chunks=docs)
+            docs = await self.map_reduce.map(query=" ".join(q.query for q in queries.query_list), chunks=docs)
 
         # 3. Format web results first to know actual token usage, then allocate remaining budget to RAG
         web_formatted = ""
@@ -310,7 +340,7 @@ class RagPipeline:
             0,
             {
                 "role": "system",
-                "content": prompt.format(context=context),
+                "content": prompt.format(context=context, current_date=datetime.now().strftime("%A, %B %d, %Y")),
             },
         )
         payload["messages"] = messages
