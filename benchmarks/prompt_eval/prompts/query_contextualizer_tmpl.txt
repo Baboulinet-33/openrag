@@ -20,6 +20,9 @@ From a chat history, reformulate the user's last message into one or more autono
   - Unrelated dimensions
     - "What are the sales figures for Product A in the US and in Europe?" should give two sub-queries (one per region).
 
+## Temporal filter rules
+For "past N days/hours/weeks/months" and "this week/quarter" queries, use only a lower-bound filter. Add an upper bound only for closed intervals ("between X and Y", "only yesterday", "on [specific date]").
+
 # additional information
 - Current date: {current_date}
 

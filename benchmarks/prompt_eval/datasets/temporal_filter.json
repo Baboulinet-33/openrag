@@ -1,0 +1,1122 @@
+[
+  {
+    "id": 2,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Summarize the documents added to the knowledge base yesterday."
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Date range covering yesterday only: created_at >= ISO \"<yesterday>T00:00:00+00:00\" AND created_at <= ISO \"<yesterday>T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 3,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What's covered in the status reports uploaded this month?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound from the first day of the current month: created_at >= ISO \"<YYYY-MM-01>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 4,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What changed in documents added since last Monday?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound from last Monday: created_at >= ISO \"<last-Monday>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 6,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What's new in documents uploaded in the past 7 days?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 7 days before today: created_at >= ISO \"<today-7days>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 10,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What contracts were added to the system in the past year?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 1 year (365 days) before today: created_at >= ISO \"<today-1year>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 13,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What incidents were reported in documents added in the past 48 hours?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 48 hours before now: created_at >= ISO \"<now-48hours>\""
+    }
+  },
+  {
+    "id": 14,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What's in the meeting notes uploaded two days ago?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Date range covering the calendar day 2 days before today: created_at >= ISO \"<today-2days>T00:00:00+00:00\" AND created_at <= ISO \"<today-2days>T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 15,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What announcements are in documents posted this week?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound from the start of the current week (Monday): created_at >= ISO \"<this-Monday>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 21,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What onboarding documents were added in the past 6 months?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 6 months before today: created_at >= ISO \"<today-6months>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 23,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What research papers were uploaded to the system in 2024?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2024-01-01T00:00:00+00:00\" AND created_at <= ISO \"2024-12-31T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 25,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What bug reports were filed in documents added this week?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound from the start of the current week (Monday): created_at >= ISO \"<this-Monday>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 101,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What technical specs were uploaded on Tuesday, April 8, 2026?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2026-04-08T00:00:00+00:00\" AND created_at <= ISO \"2026-04-08T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 102,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "List the invoices indexed on Monday, March 3, 2025."
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2025-03-03T00:00:00+00:00\" AND created_at <= ISO \"2025-03-03T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 103,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What policy documents were ingested on Friday, January 10, 2025?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2025-01-10T00:00:00+00:00\" AND created_at <= ISO \"2025-01-10T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 104,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Show me the reports submitted to the system on Wednesday, July 23, 2025."
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2025-07-23T00:00:00+00:00\" AND created_at <= ISO \"2025-07-23T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 105,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What documents were added to the knowledge base on Thursday, September 4, 2025?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2025-09-04T00:00:00+00:00\" AND created_at <= ISO \"2025-09-04T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 106,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What files were uploaded to the system on Saturday, December 14, 2024?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2024-12-14T00:00:00+00:00\" AND created_at <= ISO \"2024-12-14T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 107,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What internal memos were indexed on Tuesday, February 18, 2025?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2025-02-18T00:00:00+00:00\" AND created_at <= ISO \"2025-02-18T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 108,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What regulatory guidelines were uploaded in November 2023?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2023-11-01T00:00:00+00:00\" AND created_at <= ISO \"2023-11-30T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 109,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What engineering specs were added to the system in Q1 2024?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2024-01-01T00:00:00+00:00\" AND created_at <= ISO \"2024-03-31T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 110,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What compliance reports were ingested in February 2025?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2025-02-01T00:00:00+00:00\" AND created_at <= ISO \"2025-02-28T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 111,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What vendor contracts were uploaded in Q3 2023?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2023-07-01T00:00:00+00:00\" AND created_at <= ISO \"2023-09-30T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 112,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What HR policy documents were indexed in October 2024?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2024-10-01T00:00:00+00:00\" AND created_at <= ISO \"2024-10-31T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 113,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What project briefs were added in the last 3 days?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 3 days before today: created_at >= ISO \"<today-3days>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 114,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What safety bulletins were uploaded in the past 2 weeks?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 14 days before today: created_at >= ISO \"<today-14days>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 115,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What software release notes were indexed in the past 10 days?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 10 days before today: created_at >= ISO \"<today-10days>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 116,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What partnership agreements were added to the knowledge base in the last 5 days?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 5 days before today: created_at >= ISO \"<today-5days>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 117,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What training materials were uploaded in the past 30 days?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 30 days before today: created_at >= ISO \"<today-30days>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 118,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What audit logs were added to the system in the past 4 hours?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 4 hours before now: created_at >= ISO \"<now-4hours>\""
+    }
+  },
+  {
+    "id": 119,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What financial summaries were uploaded this quarter?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound from the first day of the current quarter: created_at >= ISO \"<start-of-current-quarter>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 120,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What product roadmaps were added last week?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Date range covering last week (Monday to Sunday of the week prior to today)"
+    }
+  },
+  {
+    "id": 121,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What customer feedback reports were indexed yesterday?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Date range covering yesterday only: created_at >= ISO \"<yesterday>T00:00:00+00:00\" AND created_at <= ISO \"<yesterday>T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 122,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What design documents were submitted to the system last month?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Date range covering the entire previous calendar month (from the 1st to the last day of last month)"
+    }
+  },
+  {
+    "id": 123,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What security advisories were uploaded before March 2024?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at < ISO \"2024-03-01T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 124,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What architecture decision records were added before June 2025?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at < ISO \"2025-06-01T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 125,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What compliance certificates were indexed between January 15 and February 28, 2025?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2025-01-15T00:00:00+00:00\" AND created_at <= ISO \"2025-02-28T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 126,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What legal agreements were uploaded between March 1 and April 30, 2024?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "created_at >= ISO \"2024-03-01T00:00:00+00:00\" AND created_at <= ISO \"2024-04-30T23:59:59+00:00\""
+    }
+  },
+  {
+    "id": 127,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What data privacy impact assessments were ingested this week?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound from the start of the current week (Monday): created_at >= ISO \"<this-Monday>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 128,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What change management proposals were submitted to the system in the past 3 months?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 3 months before today: created_at >= ISO \"<today-3months>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 129,
+    "category": "filter",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What system architecture diagrams were added to the knowledge base in the past 90 days?"
+      }
+    ],
+    "n_expected_queries": 1,
+    "expects_filter": true,
+    "filter_spec": {
+      "expected_filter": "Lower bound 90 days before today: created_at >= ISO \"<today-90days>T00:00:00+00:00\""
+    }
+  },
+  {
+    "id": 32,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the headcount numbers in 2022 and 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 33,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did the marketing strategy change from 2022 to 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 34,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare budget allocation in H1 2024 vs H2 2024."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 36,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the product launch results in January and February 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 38,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the revenue targets set for 2023 and for 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 40,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the user growth numbers in 2022 vs 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 41,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the product roadmap priorities in H1 and H2 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 42,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare incidents reported in January and February 2025."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 43,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are the pricing structure differences between 2023 and 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 45,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare the NPS scores in 2022 and 2023."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 46,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did the support ticket volume compare in H1 2023 vs H1 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 47,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the hiring metrics in 2022 and 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 48,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the main differences in the product catalog between 2023 and 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 49,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare the operating costs in 2022 vs 2023."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 201,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did customer retention rates differ between 2023 and 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 202,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the sales figures in 2022 compared to 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 203,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did employee satisfaction scores change between 2023 and 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 204,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the churn rates in 2022 versus 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 205,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare infrastructure costs in 2023 and 2024."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 206,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the R&D investments in 2022 and 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 207,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did the partnership pipeline evolve between 2023 and 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 208,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare the gross margin in 2022 vs 2023."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 209,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the engineering team priorities in H1 2024 vs H2 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 210,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare security incident counts in H1 2023 and H2 2023."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 211,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the onboarding completion rates in H1 and H2 2025?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 212,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did CAC differ between H1 2024 and H2 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 213,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the deployment frequencies in H1 2023 vs H2 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 214,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the support escalation rates in March and April 2025?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 215,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did revenue compare in October and November 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 216,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the product defect rates in June and July 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 217,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare active users in August and September 2024."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 218,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the sprint velocities in Q1 and Q2 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 219,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the market share figures in Q3 and Q4 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 220,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did customer acquisition costs compare in Q2 2024 and Q3 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 221,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the compliance findings in Q1 2023 vs Q1 2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 222,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did the feature adoption metrics change before and after the 2024 product rebrand?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 223,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What were the team performance ratings before and after the 2023 restructuring?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 224,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "How did incident response times compare before and after the new SRE team was formed in mid-2024?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 225,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What was the revenue breakdown in the first and second half of 2023?"
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  },
+  {
+    "id": 226,
+    "category": "split",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Compare partner program enrollment numbers in 2023 and 2024."
+      }
+    ],
+    "n_expected_queries": 2,
+    "expects_filter": false,
+    "filter_spec": null
+  }
+]
