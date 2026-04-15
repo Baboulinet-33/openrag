@@ -26,6 +26,7 @@ import os
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from pathlib import Path
+from typing import Literal
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -71,9 +72,18 @@ MODELS: dict[str, dict] = _build_models()
 # ---------------------------------------------------------------------------
 
 
+class TemporalPredicate(BaseModel):
+    field: Literal["created_at"] = Field(default="created_at")
+    operator: Literal["==", "!=", ">", "<", ">=", "<="]
+    value: str = Field(description='ISO 8601 datetime with timezone, e.g. "2026-03-15T00:00:00+00:00".')
+
+
 class Query(BaseModel):
     query: str = Field(description="A semantically enriched, descriptive query for vector similarity search.")
-    filter: str | None = Field(default=None, description="An optional date filter for the query.")
+    temporal_filters: list[TemporalPredicate] | None = Field(
+        default=None,
+        description="Date predicates on created_at, AND-combined. Null when no creation-date restriction.",
+    )
 
 
 class SearchQueries(BaseModel):

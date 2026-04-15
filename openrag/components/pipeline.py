@@ -2,6 +2,7 @@ import asyncio
 import copy
 from datetime import datetime
 from enum import Enum
+from typing import Literal
 
 import ray
 from components.prompts import (
@@ -34,36 +35,48 @@ class RAGMODE(Enum):
     CHATBOTRAG = "ChatBotRag"
 
 
+class TemporalPredicate(BaseModel):
+    """A single constraint on a document's creation date.
+
+    Multiple predicates on the same `Query` are combined with logical AND.
+    Use two predicates to express a closed range (e.g. last month):
+      [{op: ">=", value: "2026-03-01..."}, {op: "<=", value: "2026-03-31..."}]
+    """
+
+    field: Literal["created_at"] = Field(
+        default="created_at",
+        description="Document metadata field to filter on. Always `created_at` for now.",
+    )
+    operator: Literal["==", "!=", ">", "<", ">=", "<="] = Field(
+        description="Comparison operator applied to the date field.",
+    )
+    value: str = Field(
+        description='ISO 8601 datetime with timezone, e.g. "2026-03-15T00:00:00+00:00".',
+    )
+
+
 class Query(BaseModel):
-    """A single vector database search query with an optional Milvus `created_at` filter.
+    """A single vector database search query with optional temporal filters on document creation date.
 
-    Set `filter` only when the user restricts by **when the document was created** —
-    not when the date describes what the document is *about*.
-
-    NO filter — date is a content topic:
-      "Sales figures in 2023"          → 2023 is the reporting period.
-      "Q3 2024 financial results"      → Q3 2024 is the document subject.
-
-    YES filter — date constrains the document index:
-      "Last month's client meeting"    → created_at covers last month.
-      "Latest safety bulletin"         → created_at for most recent docs.
-      "Report published this week"     → created_at covers this week.
-
-    Syntax: created_at <op> ISO "YYYY-MM-DDTHH:MM:SS+00:00"  (operators: ==,!=,>,<,>=,<=,AND,OR,NOT)
-    Example: created_at >= ISO "2024-05-01T00:00:00+00:00" AND created_at <= ISO "2024-05-31T23:59:59+00:00"
+    Predicates in `temporal_filters` are AND-combined. To express an exclusion
+    (e.g. "last year except March"), emit TWO `Query` objects, each with its own
+    AND-combined predicates covering one side of the gap.
     """
 
     query: str = Field(description="A semantically enriched, descriptive query for vector similarity search.")
-    filter: str | None = Field(
+    temporal_filters: list[TemporalPredicate] | None = Field(
         default=None,
-        description=(
-            "Milvus filter on `created_at` — set ONLY when the user restricts by document creation date."
-            ' Format: created_at <op> ISO "YYYY-MM-DDTHH:MM:SS+00:00". Null when date refers to content topic.'
-        ),
+        description="Date predicates on `created_at`, AND-combined. Null when no temporal reference in the query.",
     )
 
+    def to_milvus_filter(self) -> str | None:
+        if not self.temporal_filters:
+            return None
+        parts = [f'{p.field} {p.operator} ISO "{p.value}"' for p in self.temporal_filters]
+        return " and ".join(parts)
+
     def __str__(self) -> str:
-        return f"Query: {self.query}, Filter: {self.filter}"
+        return f"Query: {self.query}, Filter: {self.to_milvus_filter()}"
 
 
 class SearchQueries(BaseModel):
@@ -93,7 +106,7 @@ class RetrieverPipeline:
         filter_params: dict | None = None,
     ) -> list[Document]:
         docs = await self.retriever.retrieve(
-            partition=partition, query=query.query, filter=query.filter, filter_params=None
+            partition=partition, query=query.query, filter=query.to_milvus_filter(), filter_params=None
         )
         logger.debug("Documents retreived", document_count=len(docs))
 

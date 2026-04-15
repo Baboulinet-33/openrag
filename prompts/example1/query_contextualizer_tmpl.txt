@@ -1,39 +1,42 @@
-From a chat history, reformulate the user's last message into one or more autonomous search queries by integrating relevant context from previous conversations.
+Produce a JSON list of sub-queries from the user's last message.
+Each sub-query: `query` (rewritten search string) and `temporal_filters` (list or null).
 
-# Task:
-- For follow-up questions: Reformulate by replacing pronouns with corresponding nouns and add relevant keywords
-- For independent questions: Apply only minimal corrections (grammar, keywords)
-- For simple thank you messages: No reformulation necessary
-- Enrich queries with prior conversation context only when relevant to the query.
+Current date: {current_date}
+Language for `query` field: {query_language}
+Timestamps: UTC (`+00:00`). Week starts Monday.
 
-## Query decomposition guidelines
-- Use full, descriptive sentences (not isolated keywords) to improve semantic retrieval.
-- Inject previous chat history only when it is directly relevant to the current query, as unnecessary context can degrade search quality.
-- Split complex queries into independent sub-queries, especially for comparisons or multi-dimensional questions.
-  - Distinct time periods 
-    - "What are the sales figures for Product A in Q1 and Q2?" should give two sub-queries (one per quarter).
-    - "Evolution of carbon footprint in the last 2 years" should give two sub-queries (one per year).
+# Rules
+- Rewrite the last `user:` line as one standalone sentence. Use earlier turns only to resolve pronouns. Do not answer.
+- Greetings / thanks: copy verbatim, `temporal_filters: null`.
+- Emit `temporal_filters` when the user refers to WHEN a document was created / published / written. Leave null if the date only describes the topic.
+- Emit MULTIPLE sub-queries only for exclusions ("X except Y") or clearly independent dimensions. Otherwise ONE.
 
-  - Distinct entities
-    - "What are the sales figures for Product A and Product B?" should give two sub-queries (one per product).
-    
-  - Unrelated dimensions
-    - "What are the sales figures for Product A in the US and in Europe?" should give two sub-queries (one per region).
+# Temporal filters
+Each predicate: `field="created_at"`, `operator` ∈ {{`>=`, `>`, `<=`, `<`}}, `value` = ISO 8601 UTC.
+Predicates are AND-combined. Always use half-open intervals: `>= start` AND `< next_start`.
 
-## Temporal filter rules
-For "past N days/hours/weeks/months" and "this week/quarter" queries, use only a lower-bound filter. Add an upper bound only for closed intervals ("between X and Y", "only yesterday", "on [specific date]").
+Date resolution (vs Current date):
+- today / now → `[today, tomorrow)`
+- yesterday → `[yesterday, today)`
+- this / last week → Monday-to-Monday
+- this / last month → 1st-to-1st
+- this / last year → Jan 1-to-Jan 1
+- past N days/weeks/months/years → `[Current − N, tomorrow)`
+- recent / latest → treat as "past 30 days"
+- since X → one predicate `>= X`
+- before X → one predicate `< X`
+- bare MONTH (no year) → nearest past occurrence
+- in YEAR → `[Jan 1 YEAR, Jan 1 YEAR+1)`
 
-# additional information
-- Current date: {current_date}
+For exclusions, split into two sub-queries covering each remaining range. Never negate with a single predicate.
 
-# Requirements:
-- Preserve the original tone and intention
-- Do not add information beyond necessary context
-- Do not answer the questions, only reformulate them
-- Respond in the language of the user's last message : {query_language}
+# Examples (Current date = Wednesday, April 15, 2026)
 
-# Examples:
-- User: I'm planning a trip to Italy and I'm interested in historical monuments and local cuisine.
-- Assistant: Italy offers a wealth of history and culinary delights.
-- User: What are the must-see sites?
-Reformulated query: What are the must-see historical monuments and local cuisine restaurants in Italy?
+User: "Summary of meetings in the past month"
+{{"query_list":[{{"query":"Summary of meetings held in the past month","temporal_filters":[{{"field":"created_at","operator":">=","value":"2026-03-15T00:00:00+00:00"}},{{"field":"created_at","operator":"<","value":"2026-04-16T00:00:00+00:00"}}]}}]}}
+
+User: "Documents from last year except March"
+{{"query_list":[{{"query":"Documents from January or February 2025","temporal_filters":[{{"field":"created_at","operator":">=","value":"2025-01-01T00:00:00+00:00"}},{{"field":"created_at","operator":"<","value":"2025-03-01T00:00:00+00:00"}}]}},{{"query":"Documents from April to December 2025","temporal_filters":[{{"field":"created_at","operator":">=","value":"2025-04-01T00:00:00+00:00"}},{{"field":"created_at","operator":"<","value":"2026-01-01T00:00:00+00:00"}}]}}]}}
+
+User: "Q3 2024 reporting template"
+{{"query_list":[{{"query":"Q3 2024 reporting template","temporal_filters":null}}]}}
