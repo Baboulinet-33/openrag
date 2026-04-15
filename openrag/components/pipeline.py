@@ -102,12 +102,23 @@ class RetrieverPipeline:
         partition: list[str],
         query: Query,
         top_k: int | None = None,
-        filter: str | None = None,
         filter_params: dict | None = None,
     ) -> list[Document]:
         docs = await self.retriever.retrieve(
-            partition=partition, query=query.query, filter=query.to_milvus_filter(), filter_params=None
+            partition=partition, query=query.query, filter=query.to_milvus_filter(), filter_params=filter_params
         )
+
+        # Fallback
+        if not docs:
+            logger.debug(
+                "No documents retrieved with temporal filters, falling back to retrieval without filters",
+                query=str(query.query),
+            )
+
+            docs = await self.retriever.retrieve(
+                partition=partition, query=query.query, filter=None, filter_params=filter_params
+            )
+
         logger.debug("Documents retreived", document_count=len(docs))
 
         if docs:
@@ -142,11 +153,10 @@ class RetrieverPipeline:
         partition: list[str],
         search_queries: SearchQueries,
         top_k: int | None = None,
-        filter: str | None = None,
         filter_params: dict | None = None,
     ) -> list[Document]:
         tasks = [
-            self.retrieve_docs(partition=partition, query=q, top_k=top_k, filter=filter, filter_params=filter_params)
+            self.retrieve_docs(partition=partition, query=q, top_k=top_k, filter_params=filter_params)
             for q in search_queries.query_list
         ]
         results = await asyncio.gather(*tasks)
@@ -208,7 +218,7 @@ class RagPipeline:
                 }
                 prompt = QUERY_CONTEXTUALIZER_PROMPT.format(
                     query_language=query_language,
-                    current_date=datetime.now().strftime("%A, %B %d, %Y"),
+                    current_date=datetime.now().strftime("%A, %B %d, %Y, %H:%M:%S"),
                 )
 
                 messages = [
@@ -353,7 +363,9 @@ class RagPipeline:
             0,
             {
                 "role": "system",
-                "content": prompt.format(context=context, current_date=datetime.now().strftime("%A, %B %d, %Y")),
+                "content": prompt.format(
+                    context=context, current_date=datetime.now().strftime("%A, %B %d, %Y, %H:%M:%S")
+                ),
             },
         )
         payload["messages"] = messages
