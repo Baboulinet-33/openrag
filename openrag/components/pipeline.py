@@ -205,36 +205,44 @@ class RagPipeline:
                 return SearchQueries(query_list=[Query(query=last_msg["content"])])
 
             case RAGMODE.CHATBOTRAG:
-                # Contextualize the query based on the chat history
-                chat_history = ""
-                for m in messages:
-                    chat_history += f"{m['role']}: {m['content']}\n"
+                try:
+                    # Contextualize the query based on the chat history
+                    chat_history = ""
+                    for m in messages:
+                        chat_history += f"{m['role']}: {m['content']}\n"
 
-                query_language = detect_language(messages[-1]["content"])
+                    query_language = detect_language(messages[-1]["content"])
 
-                model_kwargs = {
-                    "max_completion_tokens": self.max_contextualized_query_len,
-                    "extra_body": {"chat_template_kwargs": {"enable_thinking": False}},
-                }
-                prompt = QUERY_CONTEXTUALIZER_PROMPT.format(
-                    query_language=query_language,
-                    current_date=datetime.now().strftime("%A, %B %d, %Y, %H:%M:%S"),
-                )
+                    model_kwargs = {
+                        "max_completion_tokens": self.max_contextualized_query_len,
+                        "extra_body": {"chat_template_kwargs": {"enable_thinking": False}},
+                    }
+                    prompt = QUERY_CONTEXTUALIZER_PROMPT.format(
+                        query_language=query_language,
+                        current_date=datetime.now().strftime("%A, %B %d, %Y, %H:%M:%S"),
+                    )
 
-                messages = [
-                    {
-                        "role": "system",
-                        "content": prompt,
-                    },
-                    {
-                        "role": "user",
-                        "content": f"Here is the chat history: \n{chat_history}\n",
-                    },
-                ]
+                    messages = [
+                        {
+                            "role": "system",
+                            "content": prompt,
+                        },
+                        {
+                            "role": "user",
+                            "content": f"Here is the chat history: \n{chat_history}\n",
+                        },
+                    ]
 
-                # generate queries based on the chat history
-                output: SearchQueries = await self.query_generator.bind(**model_kwargs).ainvoke(messages)
-                return output
+                    # generate queries based on the chat history
+                    output: SearchQueries = await self.query_generator.bind(**model_kwargs).ainvoke(messages)
+                    return output
+                except Exception as e:
+                    logger.error(
+                        "Error generating contextualized query, falling back to last user message as query",
+                        error=str(e),
+                    )
+                    last_msg = messages[-1]
+                    return SearchQueries(query_list=[Query(query=last_msg["content"])])
 
     async def _prepare_for_chat_completion(self, partition: list[str] | None, payload: dict):
         messages = payload["messages"]
