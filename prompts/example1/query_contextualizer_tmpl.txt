@@ -1,17 +1,29 @@
-Produce a JSON list of sub-queries from the user's last message.
-Each sub-query: `query` (rewritten search string) and `temporal_filters` (list or null).
+Produce a JSON object listing sub-queries derived from the user's last message.
+
+Output shape (return this JSON object, nothing else):
+{{"query_list": [ {{"query": "<rewritten search string>", "temporal_filters": <list of predicates | null>}} ]}}
 
 Current date: {current_date}
 Language for `query` field: {query_language}
 Timestamps: UTC (`+00:00`). Week starts Monday.
 
-# Rules
-- Rewrite the last `user:` line as one standalone sentence. Use earlier turns only to resolve pronouns. Do not answer.
+# Rewrite rules (`query` field)
+- Rewrite the last `user:` line as one standalone descriptive sentence.
+- Use earlier turns only to resolve pronouns or add context directly relevant to the query; do not inject unrelated history.
+- For independent questions: minimal changes (grammar, missing keywords).
 - Greetings / thanks: copy verbatim, `temporal_filters: null`.
-- Emit `temporal_filters` when the user refers to WHEN a document was created / published / written. Leave null if the date only describes the topic.
-- Emit MULTIPLE sub-queries only for exclusions ("X except Y") or clearly independent dimensions. Otherwise ONE.
+- Do not answer. Only reformulate.
+
+# Sub-queries — when to split
+Emit MULTIPLE sub-queries ONLY when the question covers independent aspects that benefit from separate retrieval:
+- Distinct time periods — "sales in Q1 and Q2" → one per quarter.
+- Distinct entities — "Product A and Product B" → one per product.
+- Unrelated dimensions — "sales in US and in Europe" → one per region.
+- Exclusions — "last year except March" → one per remaining range.
+Otherwise emit ONE sub-query. Do not split for synonyms or rephrasings of the same question.
 
 # Temporal filters
+Emit `temporal_filters` when the user refers to WHEN a document was created / published / written. Leave null if the date only describes the topic.
 Each predicate: `field="created_at"`, `operator` ∈ {{`>=`, `>`, `<=`, `<`}}, `value` = ISO 8601 UTC.
 Predicates are AND-combined. Always use half-open intervals: `>= start` AND `< next_start`.
 
@@ -22,7 +34,7 @@ Date resolution (vs Current date):
 - this / last month → 1st-to-1st
 - this / last year → Jan 1-to-Jan 1
 - past N days/weeks/months/years → `[Current − N, tomorrow)`
-- recent / latest → treat as "past 30 days"
+- recent / latest → treat as "past 90 days"
 - since X → one predicate `>= X`
 - before X → one predicate `< X`
 - bare MONTH (no year) → nearest past occurrence
@@ -34,6 +46,9 @@ For exclusions, split into two sub-queries covering each remaining range. Never 
 
 User: "Summary of meetings in the past month"
 {{"query_list":[{{"query":"Summary of meetings held in the past month","temporal_filters":[{{"field":"created_at","operator":">=","value":"2026-03-15T00:00:00+00:00"}},{{"field":"created_at","operator":"<","value":"2026-04-16T00:00:00+00:00"}}]}}]}}
+
+User: "Sales figures for Product A and Product B"
+{{"query_list":[{{"query":"Sales figures for Product A","temporal_filters":null}},{{"query":"Sales figures for Product B","temporal_filters":null}}]}}
 
 User: "Documents from last year except March"
 {{"query_list":[{{"query":"Documents from January or February 2025","temporal_filters":[{{"field":"created_at","operator":">=","value":"2025-01-01T00:00:00+00:00"}},{{"field":"created_at","operator":"<","value":"2025-03-01T00:00:00+00:00"}}]}},{{"query":"Documents from April to December 2025","temporal_filters":[{{"field":"created_at","operator":">=","value":"2025-04-01T00:00:00+00:00"}},{{"field":"created_at","operator":"<","value":"2026-01-01T00:00:00+00:00"}}]}}]}}

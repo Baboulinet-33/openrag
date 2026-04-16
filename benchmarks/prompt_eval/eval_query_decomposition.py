@@ -212,7 +212,7 @@ async def run_eval_for_model(
         api_key=model_cfg.get("api_key", "EMPTY"),
         model=model_cfg["model"],
         temperature=0.1,
-    ).with_structured_output(SearchQueries, method="function_calling")
+    ).with_structured_output(SearchQueries, method="json_mode")
 
     tasks = [run_case(case, prompt_template, query_generator, model_base_url) for case in dataset]
 

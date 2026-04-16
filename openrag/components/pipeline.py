@@ -15,8 +15,9 @@ from components.utils import detect_language, format_context, format_web_context
 from components.websearch import WebSearchFactory
 from config import load_config
 from langchain_core.documents.base import Document
+from langchain_core.exceptions import OutputParserException
 from langchain_openai import ChatOpenAI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 from utils.logger import get_logger
 
 from .llm import LLM
@@ -183,7 +184,7 @@ class RagPipeline:
             api_key=config.llm.api_key,
             model=config.llm.model,
             temperature=config.llm.temperature,
-        ).with_structured_output(SearchQueries, method="function_calling")
+        ).with_structured_output(SearchQueries, method="json_mode")
 
         self.max_contextualized_query_len = config.rag.max_contextualized_query_len
 
@@ -205,44 +206,47 @@ class RagPipeline:
                 return SearchQueries(query_list=[Query(query=last_msg["content"])])
 
             case RAGMODE.CHATBOTRAG:
-                try:
-                    # Contextualize the query based on the chat history
-                    chat_history = ""
-                    for m in messages:
-                        chat_history += f"{m['role']}: {m['content']}\n"
+                # Contextualize the query based on the chat history
+                chat_history = ""
+                for m in messages:
+                    chat_history += f"{m['role']}: {m['content']}\n"
 
-                    query_language = detect_language(messages[-1]["content"])
+                last_user_query = messages[-1]["content"]
+                query_language = detect_language(last_user_query)
 
-                    model_kwargs = {
-                        "max_completion_tokens": self.max_contextualized_query_len,
-                        "extra_body": {"chat_template_kwargs": {"enable_thinking": False}},
-                    }
-                    prompt = QUERY_CONTEXTUALIZER_PROMPT.format(
-                        query_language=query_language,
-                        current_date=datetime.now().strftime("%A, %B %d, %Y, %H:%M:%S"),
-                    )
+                model_kwargs = {
+                    "max_completion_tokens": self.max_contextualized_query_len,
+                    "extra_body": {
+                        "chat_template_kwargs": {"enable_thinking": False},
+                        # vLLM-only: constrain decoding to the schema. Silently ignored by other backends.
+                        # See https://docs.vllm.ai/en/v0.8.2/features/structured_outputs.html
+                        "guided_json": SearchQueries.model_json_schema(),
+                    },
+                }
+                prompt = QUERY_CONTEXTUALIZER_PROMPT.format(
+                    query_language=query_language,
+                    current_date=datetime.now().strftime("%A, %B %d, %Y, %H:%M:%S"),
+                )
 
-                    messages = [
-                        {
-                            "role": "system",
-                            "content": prompt,
-                        },
-                        {
-                            "role": "user",
-                            "content": f"Here is the chat history: \n{chat_history}\n",
-                        },
-                    ]
+                llm_messages = [
+                    {"role": "system", "content": prompt},
+                    {"role": "user", "content": f"Here is the chat history: \n{chat_history}\n"},
+                ]
 
-                    # generate queries based on the chat history
-                    output: SearchQueries = await self.query_generator.bind(**model_kwargs).ainvoke(messages)
-                    return output
-                except Exception as e:
-                    logger.error(
-                        "Error generating contextualized query, falling back to last user message as query",
-                        error=str(e),
-                    )
-                    last_msg = messages[-1]
-                    return SearchQueries(query_list=[Query(query=last_msg["content"])])
+                # Retry once on schema-validation failure; fall back to the raw user query on the second failure.
+                generator = self.query_generator.bind(**model_kwargs)
+                for attempt in (1, 2):
+                    try:
+                        return await generator.ainvoke(llm_messages)
+                    except (ValidationError, OutputParserException) as exc:
+                        if attempt == 1:
+                            logger.warning("Query generation schema error — retrying", error=str(exc))
+                        else:
+                            logger.warning(
+                                "Query generation failed twice — falling back to raw user query",
+                                error=str(exc),
+                            )
+                return SearchQueries(query_list=[Query(query=last_user_query)])
 
     async def _prepare_for_chat_completion(self, partition: list[str] | None, payload: dict):
         messages = payload["messages"]
