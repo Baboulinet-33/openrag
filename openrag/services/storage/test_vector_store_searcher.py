@@ -73,6 +73,27 @@ def test_dict_to_chunk_metadata_excludes_reserved_keys():
     assert "extra_key" in c.metadata
 
 
+def test_dict_to_chunk_none_id_generates_uuid():
+    """When Milvus returns id=None (anomaly), fall through to _id or generate a UUID."""
+    import uuid as _uuid
+
+    row = {"id": None, "text": "t", "partition": "p", "file_id": "f"}
+    c = _dict_to_chunk(row)
+    # Should not be "None" (the string) — must be a valid UUID
+    assert c.id != "None"
+    _uuid.UUID(c.id)  # raises if not a valid UUID
+
+
+def test_dict_to_chunk_string_none_id_generates_uuid():
+    """The string 'None' (from str(None)) must not propagate as a chunk id."""
+    import uuid as _uuid
+
+    row = {"id": "None", "text": "t", "partition": "p", "file_id": "f"}
+    c = _dict_to_chunk(row)
+    assert c.id != "None"
+    _uuid.UUID(c.id)
+
+
 # ---------------------------------------------------------------------------
 # search()
 # ---------------------------------------------------------------------------

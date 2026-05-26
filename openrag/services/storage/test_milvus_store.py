@@ -340,6 +340,37 @@ class TestChunkToEntity:
 
 
 # ---------------------------------------------------------------------------
+# _parse_search_response
+# ---------------------------------------------------------------------------
+
+
+class TestParseSearchResponse:
+    def _make_hit(self, hit_id: Any, entity: dict[str, Any]) -> dict[str, Any]:
+        return {"id": hit_id, "distance": 0.9, "entity": entity}
+
+    def test_normal_hit_id_stringified(self, store: MilvusVectorStore) -> None:
+        hit = self._make_hit(12345, {"text": "hello", "partition": "p"})
+        records = store._parse_search_response([[hit]])
+        assert records[0]["id"] == "12345"
+
+    def test_none_hit_id_not_set(self, store: MilvusVectorStore) -> None:
+        """A None primary key from Milvus must not propagate as the string 'None'."""
+        hit = self._make_hit(None, {"text": "hello", "partition": "p"})
+        records = store._parse_search_response([[hit]])
+        assert "id" not in records[0]
+
+    def test_empty_response_returns_empty(self, store: MilvusVectorStore) -> None:
+        assert store._parse_search_response([]) == []
+        assert store._parse_search_response([[]], ) == []
+
+    def test_vector_field_dropped(self, store: MilvusVectorStore) -> None:
+        hit = self._make_hit(1, {"text": "t", "vector": [0.1, 0.2], "partition": "p"})
+        records = store._parse_search_response([[hit]])
+        assert "vector" not in records[0]
+        assert records[0].get("text") == "t"
+
+
+# ---------------------------------------------------------------------------
 # Surface-level ABC-vs-bound-collection enforcement
 # ---------------------------------------------------------------------------
 

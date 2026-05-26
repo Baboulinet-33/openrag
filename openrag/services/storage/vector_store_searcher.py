@@ -23,7 +23,8 @@ def _dict_to_chunk(row: dict[str, Any]) -> Chunk:
     ``search()`` returns ``"id"`` (string already stringified by the store);
     ``query_chunks_by_filter()`` returns ``"_id"`` (raw Milvus INT64).
     """
-    raw_id = row.get("id") or row.get("_id")
+    _id_from_search = row.get("id")
+    raw_id = (_id_from_search if _id_from_search not in (None, "None") else None) or row.get("_id")
     chunk_id = str(raw_id) if raw_id is not None else str(uuid.uuid4())
     skip = {"text", "vector", "_id", "id", "score", "file_id", "partition", "page", "chunk_type"}
     metadata = {k: v for k, v in row.items() if k not in skip}

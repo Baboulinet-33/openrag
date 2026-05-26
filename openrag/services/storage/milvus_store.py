@@ -683,7 +683,9 @@ class MilvusVectorStore(VectorStore):
         for hit in response[0]:
             entity = hit.get("entity", {}) if isinstance(hit, dict) else {}
             record = {k: v for k, v in entity.items() if k not in _SEARCH_RESULT_DROPPED_KEYS}
-            record["id"] = self._milvus_id_to_str(hit.get("id"))
+            hit_id = hit.get("id")
+            if hit_id is not None:
+                record["id"] = self._milvus_id_to_str(hit_id)
             record["score"] = hit.get("distance")
             out.append(record)
         return out
