@@ -10,6 +10,10 @@ def default_max_tokens():
 
 
 class OpenAIMessage(BaseModel):
+    # Accept and forward OpenAI message fields beyond role/content (`name`,
+    # `tool_calls`, ...) — QueryService._sanitize_messages already expects them.
+    model_config = ConfigDict(extra="allow")
+
     role: Literal["user", "assistant", "system"]
     content: str
 

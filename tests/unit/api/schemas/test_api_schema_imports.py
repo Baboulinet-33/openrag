@@ -29,6 +29,23 @@ def test_openai_schemas_preserve_existing_defaults():
     assert completion.best_of == 1
 
 
+def test_message_accepts_and_forwards_openai_extra_fields():
+    """OpenAI-compatible clients send message fields beyond role/content
+    (e.g. `name`, `tool_calls` on assistant turns — which
+    QueryService._sanitize_messages explicitly supports). They must validate
+    and survive model_dump so they reach the downstream LLM."""
+    request = OpenAIChatCompletionRequest.model_validate(
+        {
+            "messages": [
+                {"role": "user", "content": "hi", "name": "alice"},
+            ]
+        }
+    )
+    dump = request.model_dump(exclude_none=True)
+
+    assert dump["messages"][0]["name"] == "alice"
+
+
 def test_chat_request_forwards_response_format():
     """response_format is a declared field and must survive model_dump so the
     router forwards it to the LLM (e.g. for JSON / structured outputs)
