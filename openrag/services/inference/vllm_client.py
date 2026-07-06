@@ -65,6 +65,10 @@ class VLLMClient(LLM):
         api_key: str = "",
         timeout: float = 240.0,
         enable_thinking: bool | None = None,
+        # Always passed by the DI component factory (ModelEndpointConfig column);
+        # meaningless for chat/completions. Consumed here so it never lands in
+        # `_defaults` — strict providers (api.openai.com) reject unknown params.
+        batch_size: int | None = None,
         **kwargs,
     ) -> None:
         self._endpoint = endpoint.rstrip("/")

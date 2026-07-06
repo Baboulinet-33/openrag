@@ -190,6 +190,44 @@ class TestOllamaClient:
         lines = [line async for line in client.stream_chat([{"role": "user", "content": "hi"}])]
         assert lines == ["data: [DONE]"]
 
+    @pytest.mark.asyncio
+    async def test_batch_size_not_forwarded(self):
+        """The DI component factory passes `batch_size` to every client
+        constructor. It is not an LLM API parameter and must not reach the
+        wire (strict OpenAI-compatible backends reject unknown arguments)."""
+        captured: dict = {}
+
+        def capture(req: httpx.Request) -> httpx.Response:
+            captured.update(json.loads(req.content))
+            return _chat_response()
+
+        await self._make_client(capture, batch_size=32).chat([{"role": "user", "content": "hi"}])
+        assert "batch_size" not in captured
+
+    @pytest.mark.asyncio
+    async def test_api_key_not_forwarded_in_body(self):
+        """An `api_key` configured in the endpoint's extra is a credential,
+        not a sampling parameter — it must never be serialized into the JSON
+        payload sent to the model server."""
+        captured: dict = {}
+
+        def capture(req: httpx.Request) -> httpx.Response:
+            captured.update(json.loads(req.content))
+            return _chat_response()
+
+        await self._make_client(capture, api_key="secret").chat([{"role": "user", "content": "hi"}])
+        assert "api_key" not in captured
+
+    def test_api_key_used_as_bearer_header(self):
+        """Ollama behind an authenticated reverse proxy expects the key as a
+        Bearer token, same as the vLLM client."""
+        client = OllamaClient(endpoint="http://ollama:11434", model_name="llama3", api_key="secret")
+        assert client._client.headers["Authorization"] == "Bearer secret"
+
+    def test_no_authorization_header_without_api_key(self):
+        client = OllamaClient(endpoint="http://ollama:11434", model_name="llama3")
+        assert "Authorization" not in client._client.headers
+
     def test_endpoint_v1_appended_when_missing(self):
         client = OllamaClient(endpoint="http://ollama:11434", model_name="llama3")
         assert client._endpoint == "http://ollama:11434/v1"

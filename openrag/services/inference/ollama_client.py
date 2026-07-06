@@ -57,7 +57,12 @@ class OllamaClient(LLM):
         endpoint: str,
         model_name: str,
         *,
+        api_key: str = "",
         timeout: float = 240.0,
+        # Always passed by the DI component factory (ModelEndpointConfig column);
+        # meaningless for chat/completions. Consumed here so it never lands in
+        # `_defaults` and thus on the wire.
+        batch_size: int | None = None,
         **kwargs,
     ) -> None:
         self._endpoint = endpoint.rstrip("/")
@@ -65,10 +70,12 @@ class OllamaClient(LLM):
             self._endpoint = f"{self._endpoint}/v1"
         self._model = model_name
         self._defaults: dict = kwargs
-        self._client = httpx.AsyncClient(
-            timeout=timeout,
-            headers={"Content-Type": "application/json"},
-        )
+        # api_key is a credential, not a sampling param: send it as a Bearer
+        # header (Ollama behind an authenticated reverse proxy), never in the body.
+        headers = {"Content-Type": "application/json"}
+        if api_key:
+            headers["Authorization"] = f"Bearer {api_key}"
+        self._client = httpx.AsyncClient(timeout=timeout, headers=headers)
 
     @with_circuit_breaker("llm")
     @with_retry(max_attempts=3)

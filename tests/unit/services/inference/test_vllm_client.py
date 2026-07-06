@@ -208,6 +208,32 @@ class TestVLLMClient:
         await self._make_client(handler).chat([{"role": "user", "content": "hi"}], temperature=0.9, max_tokens=100)
 
     @pytest.mark.asyncio
+    async def test_batch_size_not_forwarded_on_chat(self):
+        """The DI component factory passes `batch_size` to every client
+        constructor. It is not an LLM API parameter: strict providers
+        (api.openai.com) reject unknown request arguments with 400, so it
+        must never reach the wire."""
+        captured: dict = {}
+
+        def capture(req: httpx.Request) -> httpx.Response:
+            captured.update(json.loads(req.content))
+            return _chat_response()
+
+        await self._make_client(capture, batch_size=32).chat([{"role": "user", "content": "hi"}])
+        assert "batch_size" not in captured
+
+    @pytest.mark.asyncio
+    async def test_batch_size_not_forwarded_on_generate(self):
+        captured: dict = {}
+
+        def capture(req: httpx.Request) -> httpx.Response:
+            captured.update(json.loads(req.content))
+            return _completions_response()
+
+        await self._make_client(capture, batch_size=32).generate("hi")
+        assert "batch_size" not in captured
+
+    @pytest.mark.asyncio
     async def test_trailing_slash_stripped(self):
         c = VLLMClient(endpoint="http://vllm:8000/v1/", model_name="m")
         assert c._endpoint == "http://vllm:8000/v1"
