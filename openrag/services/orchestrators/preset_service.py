@@ -51,7 +51,7 @@ _DEFAULT_SEEDS: dict[str, dict[str, dict[str, Any]]] = {
             # pymupdf-configured deployment. Named presets below opt in explicitly.
             "enable_image_captioning": True,
             "enable_entity_extraction": True,
-            "enable_topic_tagging": True,
+            "enable_topic_tagging": False,
         },
         "legal": {
             "chunking": {"name": "recursive_splitter", "chunk_size": 1024, "chunk_overlap_rate": 0.25},
