@@ -70,6 +70,7 @@ class WorkerDispatcher(IndexingDispatcher):
         replace: bool,
         indexation_config: dict | None = None,
         embedder_name: str | None = None,
+        quota_reserved: bool = False,
     ) -> str:
         task_id = uuid.uuid4().hex
 
@@ -105,6 +106,7 @@ class WorkerDispatcher(IndexingDispatcher):
                 replace=replace,
                 indexation_config=indexation_config,
                 embedder_name=embedder_name,
+                quota_reserved=quota_reserved,
             ),
             task_description=f"submit({task_id})",
         )
@@ -169,14 +171,15 @@ class WorkerDispatcher(IndexingDispatcher):
         metadata: dict,
         partition: str,
         user: dict | None,
-    ) -> None:
+    ) -> bool:
+        """Copy the file's chunks + catalog row; return whether a row was created."""
         rows = await self._vector_store.query_chunks_by_filter(
             self._collection,
             {"partition": partition, "file_id": file_id},
             output_fields=["*", "vector"],
         )
         if not rows:
-            return
+            return False
 
         entities = []
         for row in rows:
@@ -191,13 +194,15 @@ class WorkerDispatcher(IndexingDispatcher):
         target_partition = metadata.get("partition", partition)
         file_metadata = self._file_metadata_from_chunk(rows[0])
         file_metadata.update(metadata)
-        await self._document_repo.add_file_to_partition(
-            file_id=target_file_id,
-            partition=target_partition,
-            file_metadata=file_metadata,
-            user_id=user.get("id") if user else None,
-            relationship_id=file_metadata.get("relationship_id"),
-            parent_id=file_metadata.get("parent_id"),
+        return bool(
+            await self._document_repo.add_file_to_partition(
+                file_id=target_file_id,
+                partition=target_partition,
+                file_metadata=file_metadata,
+                user_id=user.get("id") if user else None,
+                relationship_id=file_metadata.get("relationship_id"),
+                parent_id=file_metadata.get("parent_id"),
+            )
         )
 
     async def _upsert_entities(self, entities: list[dict[str, Any]]) -> None:

@@ -49,9 +49,11 @@ class FakeDispatcher:
         replace,
         indexation_config=None,
         embedder_name=None,
+        quota_reserved=False,
     ):
         self.dispatched.append(
             {
+                "quota_reserved": quota_reserved,
                 "path": path,
                 "metadata": metadata,
                 "partition": partition,

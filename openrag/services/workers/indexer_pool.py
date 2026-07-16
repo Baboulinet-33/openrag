@@ -7,7 +7,7 @@ from types import SimpleNamespace
 from typing import Any
 
 import ray
-from services.workers.indexer_actor import IndexerWorker, delete_uploaded_file
+from services.workers.indexer_actor import IndexerWorker, _release_quota_slot, delete_uploaded_file
 
 from openrag.core.config.root import Settings
 
@@ -113,6 +113,9 @@ class IndexerWorkerActor:
             task_state_manager=task_state_manager,
             document_repo=self._catalog_store.document_repo,
             topic_tag_repo=self._catalog_store.topic_tag_repo,
+            # #664: the worker owns the uploader's reserved file slot and
+            # releases it when the file never reaches the catalog.
+            user_repo=self._catalog_store.user_repo,
         )
         # When False (e.g. Twake, which keeps its own copy), the raw upload is
         # purged from ``paths.data_dir`` once indexing settles. Enforced at this
@@ -209,10 +212,20 @@ class IndexerWorkerActor:
         replace: bool = False,
         indexation_config: dict[str, Any] | None = None,
         embedder_name: str | None = None,
+        quota_reserved: bool = False,
     ) -> dict[str, Any]:
         try:
-            await self._ensure_catalog()
-            await self._ensure_registry_fresh(_required_model_endpoint_names(indexation_config, embedder_name))
+            try:
+                await self._ensure_catalog()
+                await self._ensure_registry_fresh(_required_model_endpoint_names(indexation_config, embedder_name))
+            except BaseException:
+                # Setup blew up before the worker could take ownership of the
+                # reserved quota slot (#664), so release it here — the worker's
+                # own finally will never run. ``BaseException`` because a
+                # cancellation during setup must release too.
+                if quota_reserved:
+                    await _release_quota_slot(self._catalog_store.user_repo, (user or {}).get("id"))
+                raise
             result = await self._worker.process_file(
                 task_id=task_id,
                 path=path,
@@ -223,6 +236,7 @@ class IndexerWorkerActor:
                 replace=replace,
                 indexation_config=indexation_config,
                 embedder_name=embedder_name,
+                quota_reserved=quota_reserved,
             )
             file_id = metadata.get("file_id", "")
             if workspace_ids and not replace and file_id:
