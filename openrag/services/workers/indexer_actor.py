@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import asyncio
 import traceback
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from core.models.catalog import DocumentStatus
 from core.models.document import Document
 from services.workers.pipeline_builder import IndexingPipeline
 
@@ -31,6 +32,9 @@ class IndexerWorker:
     quota slot: when the caller admitted the upload it already charged one
     ``users.file_count`` slot, and this worker either consumes it (by
     writing the catalog row) or releases it — see ``process_file``.
+
+    Every transition is mirrored to *job_repo* (issue #660) so the outcome of a
+    file survives a restart of this worker or of the state actor.
     """
 
     def __init__(
@@ -40,12 +44,14 @@ class IndexerWorker:
         document_repo: Any = None,
         topic_tag_repo: Any = None,
         user_repo: Any = None,
+        job_repo: Any = None,
     ) -> None:
         self._pipeline = pipeline
         self._tsm = task_state_manager
         self._document_repo = document_repo
         self._topic_tag_repo = topic_tag_repo
         self._user_repo = user_repo
+        self._job_repo = job_repo
 
     async def process_file(
         self,
@@ -82,6 +88,12 @@ class IndexerWorker:
         release_slot = bool(quota_reserved)
         user_id = (user or {}).get("id")
         await self._tsm.set_state.remote(task_id, "SERIALIZING")
+        await _update_job(
+            self._job_repo,
+            task_id,
+            status=DocumentStatus.SERIALIZING,
+            started_at=datetime.now(UTC),
+        )
         try:
             document = await _load_document(path, metadata, partition)
             # One indexation timestamp for this file, shared by the Milvus chunks
@@ -124,10 +136,27 @@ class IndexerWorker:
                     indexation_config=indexation_config,
                 )
             await self._tsm.set_state.remote(task_id, "COMPLETED")
+            await _update_job(
+                self._job_repo,
+                task_id,
+                status=DocumentStatus.COMPLETED,
+                completed_at=datetime.now(UTC),
+            )
             return {"stored_count": row.get("stored_count", 0), "stage": row.get("stage", "")}
         except Exception:
             tb = traceback.format_exc()
-            await self._tsm.set_failed_if_not_cancelled.remote(task_id, tb)
+            # The actor arbitrates FAILED-vs-CANCELLED atomically under its lock;
+            # honouring its verdict here keeps the durable row from overwriting a
+            # cancellation the user already asked for (and already saw).
+            failed = await self._tsm.set_failed_if_not_cancelled.remote(task_id, tb)
+            if failed:
+                await _update_job(
+                    self._job_repo,
+                    task_id,
+                    status=DocumentStatus.FAILED,
+                    error=tb,
+                    completed_at=datetime.now(UTC),
+                )
             raise
         finally:
             if release_slot:
@@ -136,6 +165,29 @@ class IndexerWorker:
         # here: cleanup must also cover failures that happen *before* this method
         # runs (catalog/registry init, the SERIALIZING state update). See
         # ``delete_uploaded_file`` and ``IndexerWorkerActor.process_file``.
+
+
+async def _update_job(job_repo: Any, task_id: str, **fields: Any) -> None:
+    """Mirror a lifecycle transition to the durable ``jobs`` row.
+
+    Best-effort by design: this is bookkeeping about the work, not the work. A
+    Postgres blip must not fail a file that indexed correctly (nor mask the real
+    exception on the failure path, where this runs inside an ``except`` block).
+    The repository truncates the stored traceback.
+    """
+    if job_repo is None:
+        return
+    try:
+        await job_repo.update_job(task_id, **fields)
+    except Exception as exc:  # noqa: BLE001 - durable bookkeeping must not fail indexing
+        from core.utils.logging import get_logger
+
+        get_logger().warning(
+            "Durable job state write failed; job history for this task may be incomplete",
+            task_id=task_id,
+            status=fields.get("status"),
+            error=str(exc),
+        )
 
 
 async def _write_catalog_record(
